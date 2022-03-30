@@ -1,6 +1,6 @@
-# kyverno-policies
+# kyverno-policies-observability
 
-This repository contains kyverno policies which Giant Swarm uses.
+This repository contains kyverno policies which Giant Swarm uses for supporting monitoring and observability when working with Giant Swarm clusters.
 
 ## Repository structure
 
@@ -14,7 +14,7 @@ These scripts enable us to easily set up a local testing environment.
 
 ## Development
 
-There are only very few prerequists for local testing:
+There are only very few prerequisites for local testing:
 1. `make` has to be installed
 2. `kubectl` has to be installed
 3. `kind` has to be installed
@@ -42,7 +42,7 @@ We have tried to make the test setup as simple as possible but some python knowl
 
 The tests use [python fixtures](https://docs.pytest.org/en/6.2.x/fixture.html) extensively to set up any resources we need in our tests.
 
-All fixtures can be found in [ensure.py](https://github.com/giantswarm/kyverno-policies/blob/main/helm/tests/ensure.py).
+All fixtures can be found in [ensure.py](https://github.com/giantswarm/kyverno-policies-observability/blob/main/helm/tests/ensure.py).
 Each fixtures should be structured in a similar way. Let's follow an example for `AWSCluster`:
 ```python
 @pytest.fixture

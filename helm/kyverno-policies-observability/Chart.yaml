@@ -1,0 +1,9 @@
+apiVersion: v1
+name: kyverno-policies-observability
+appVersion: master
+description: Giant Swarm policies for observability management.
+home: https://github.com/giantswarm/kyverno-policies-observability
+annotations:
+  application.giantswarm.io/team: "cabbage"
+  config.giantswarm.io/version: 1.x.x
+version: [[ .Version ]]

@@ -90,7 +90,7 @@ jobs:
           command: |
             make dabs
       - run-ats:
-          chart_archive_prefix: "policies-observability"
+          chart_archive_prefix: "kyverno-policies-observability"
           tests_dir: "helm/kyverno-policies-observability/tests/ats"
       - run:
           name: Export kind logs
