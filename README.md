@@ -14,7 +14,7 @@ These scripts enable us to easily set up a local testing environment.
 
 ## Development
 
-There are only very few prerequists for local testing:
+There are only very few prerequisites for local testing:
 1. `make` has to be installed
 2. `kubectl` has to be installed
 3. `kind` has to be installed
