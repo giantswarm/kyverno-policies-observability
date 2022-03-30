@@ -121,7 +121,6 @@ workflows:
             tags:
               only: /^v.*/
 
-      # Common
       - architect/push-to-app-catalog:
           name: push-kyverno-policies-observability-to-catalog
           app_catalog: control-plane-catalog
@@ -133,5 +132,61 @@ workflows:
             - test-policies
           # Needed to trigger job also on git tag.
           filters:
+            tags:
+              only: /^v.*/
+
+      - architect/push-to-app-collection:
+          name: push-kyverno-policies-observability-to-aws-app-collection
+          context: architect
+          app_name: "kyverno-policies-observability"
+          app_namespace: "giantswarm"
+          app_collection_repo: "aws-app-collection"
+          requires:
+            - push-kyverno-policies-observability-to-catalog
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+
+      - architect/push-to-app-collection:
+          name: push-kyverno-policies-observability-to-azure-app-collection
+          context: architect
+          app_name: "kyverno-policies-observability"
+          app_namespace: "giantswarm"
+          app_collection_repo: "azure-app-collection"
+          requires:
+            - push-kyverno-policies-observability-to-catalog
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+
+      - architect/push-to-app-collection:
+          name: push-kyverno-policies-observability-to-kvm-app-collection
+          context: architect
+          app_name: "kyverno-policies-observability"
+          app_namespace: "giantswarm"
+          app_collection_repo: "kvm-app-collection"
+          requires:
+            - push-kyverno-policies-observability-to-catalog
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+
+      - architect/push-to-app-collection:
+          name: push-kyverno-policies-observability-to-openstack-app-collection
+          context: architect
+          app_name: "kyverno-policies-observability"
+          app_namespace: "giantswarm"
+          app_collection_repo: "openstack-app-collection"
+          requires:
+            - push-kyverno-policies-observability-to-catalog
+          filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^v.*/
