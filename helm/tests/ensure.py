@@ -11,6 +11,7 @@ from pytest_kube import forward_requests, wait_for_rollout, app_template
 import logging
 LOGGER = logging.getLogger(__name__)
 
+pod_monitor_name = "test-pod-monitor"
 service_monitor_name = "test-service-monitor"
 silence_name = "test-silence"
 cluster_name = "test-cluster"
@@ -669,9 +670,55 @@ def azuremachinepool(kubernetes_cluster):
     kubernetes_cluster.kubectl(f"delete azuremachinepool {machinepool_name}", output=None)
     LOGGER.info(f"AzureMachinePool {machinepool_name} deleted")
 
+@pytest.fixture
+def kubeadm_control_plane(kubernetes_cluster):
+    c = dedent(f"""
+        apiVersion: controlplane.cluster.x-k8s.io/v1alpha4
+        kind: KubeadmControlPlane
+        metadata:
+          labels:
+            cluster.x-k8s.io/cluster-name: {cluster_name}
+            cluster.x-k8s.io/watch-filter: capi
+          name: {cluster_name}
+          namespace: default
+        spec:
+          kubeadmConfigSpec:
+            clusterConfiguration:
+              apiServer:
+                extraArgs:
+                  cloud-config: /etc/kubernetes/azure.json
+                  cloud-provider: azure
+                extraVolumes:
+                - hostPath: /etc/kubernetes/azure.json
+                  mountPath: /etc/kubernetes/azure.json
+                  name: cloud-config
+                  readOnly: true
+              controllerManager:
+                extraArgs:
+                  allocate-node-cidrs: "false"
+          machineTemplate:
+            infrastructureRef:
+              apiVersion: infrastructure.cluster.x-k8s.io/v1alpha4
+              kind: AWSMachineTemplate
+              name: {cluster_name}
+          version: 1.22.0
+    """)
+
+    kubernetes_cluster.kubectl("apply", input=c, output=None)
+    LOGGER.info(f"KubeadmControlPlane {cluster_name} applied")
+
+    raw = kubernetes_cluster.kubectl(
+        f"get kubeadmcontrolplane {cluster_name}", output="yaml")
+
+    kcp = yaml.safe_load(raw)
+
+    yield kcp
+
+    kubernetes_cluster.kubectl(f"delete kubeadmcontrolplane {cluster_name}", output=None)
+    LOGGER.info(f"kubeadmcontrolplane {cluster_name} deleted")
+
 
 # Silence fixtures
-
 @pytest.fixture
 def silence(kubernetes_cluster):
     c = dedent(f"""
@@ -728,49 +775,70 @@ def silence_with_matchers(kubernetes_cluster):
     kubernetes_cluster.kubectl(f"delete silence {silence_name}", output=None)
     LOGGER.info(f"Silence {silence_name} deleted")
 
+# Service Monitor fixtures
 @pytest.fixture
-def kubeadm_control_plane(kubernetes_cluster):
-    c = dedent(f"""
-        apiVersion: controlplane.cluster.x-k8s.io/v1alpha4
-        kind: KubeadmControlPlane
+def servicemonitor(kubernetes_cluster):
+    sm = dedent(f"""
+        apiVersion: monitoring.coreos.com/v1
+        kind: ServiceMonitor
         metadata:
-          labels:
-            cluster.x-k8s.io/cluster-name: {cluster_name}
-            cluster.x-k8s.io/watch-filter: capi
-          name: {cluster_name}
+          name: {service_monitor_name}
           namespace: default
         spec:
-          kubeadmConfigSpec:
-            clusterConfiguration:
-              apiServer:
-                extraArgs:
-                  cloud-config: /etc/kubernetes/azure.json
-                  cloud-provider: azure
-                extraVolumes:
-                - hostPath: /etc/kubernetes/azure.json
-                  mountPath: /etc/kubernetes/azure.json
-                  name: cloud-config
-                  readOnly: true
-              controllerManager:
-                extraArgs:
-                  allocate-node-cidrs: "false"
-          machineTemplate:
-            infrastructureRef:
-              apiVersion: infrastructure.cluster.x-k8s.io/v1alpha4
-              kind: AWSMachineTemplate
-              name: {cluster_name}
-          version: 1.22.0
+          selector:
+            matchLabels:
+              app: my-app
+          endpoints:
+          - port: "web"
+            relabelings:
+              - targetLabel: app
+          - port: "http"
+            relabelings:
+              - targetLabel: app
     """)
 
-    kubernetes_cluster.kubectl("apply", input=c, output=None)
-    LOGGER.info(f"KubeadmControlPlane {cluster_name} applied")
+    kubernetes_cluster.kubectl("apply", input=sm, output=None)
+    LOGGER.info(f"ServiceMonitor {service_monitor_name} applied")
 
     raw = kubernetes_cluster.kubectl(
-        f"get kubeadmcontrolplane {cluster_name}", output="yaml")
+        f"get servicemonitors {service_monitor_name}", output="yaml")
 
-    kcp = yaml.safe_load(raw)
+    serviceMonitor = yaml.safe_load(raw)
 
-    yield kcp
+    yield serviceMonitor
 
-    kubernetes_cluster.kubectl(f"delete kubeadmcontrolplane {cluster_name}", output=None)
-    LOGGER.info(f"kubeadmcontrolplane {cluster_name} deleted")
+    kubernetes_cluster.kubectl(f"delete servicemonitors {service_monitor_name}", output=None)
+    LOGGER.info(f"ServiceMonitor {service_monitor_name} deleted")
+
+# Pod Monitor fixtures
+@pytest.fixture
+def podmonitor(kubernetes_cluster):
+    sm = dedent(f"""
+        apiVersion: monitoring.coreos.com/v1
+        kind: PodMonitor
+        metadata:
+          name: {pod_monitor_name}
+          namespace: default
+        spec:
+          selector:
+            matchLabels:
+              app: my-app
+          namespaceSelector:
+            any: true
+          podMetricsEndpoints:
+          - interval: 30s
+            port: http
+    """)
+
+    kubernetes_cluster.kubectl("apply", input=sm, output=None)
+    LOGGER.info(f"PodMonitor {pod_monitor_name} applied")
+
+    raw = kubernetes_cluster.kubectl(
+        f"get podmonitors {pod_monitor_name}", output="yaml")
+
+    podMonitor = yaml.safe_load(raw)
+
+    yield podMonitor
+
+    kubernetes_cluster.kubectl(f"delete podmonitors {pod_monitor_name}", output=None)
+    LOGGER.info(f"PodMonitor {pod_monitor_name} deleted")
