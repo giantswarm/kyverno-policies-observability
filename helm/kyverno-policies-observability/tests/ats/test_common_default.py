@@ -111,9 +111,10 @@ def test_pod_monitor_labelling_schema_policy(podmonitor) -> None:
           and relabelings[6]['sourceLabels'] == ['__meta_kubernetes_pod_container_name'] and relabelings[6]['targetLabel'] == 'container' \
           and relabelings[7]['sourceLabels'] == ['__meta_kubernetes_pod_node_name'] and relabelings[7]['targetLabel'] == 'node'           \
           and relabelings[8]['sourceLabels'] == ['__meta_kubernetes_node_label_role'] and relabelings[8]['targetLabel'] == 'role'         \
-          and relabelings[9]['sourceLabels'] == ['__meta_kubernetes_node_label_role'] and relabelings[9]['targetLabel'] == 'role'         \
-          and relabelings[9]['regex'] == '' and relabelings[9]['replacement'] == 'worker'                                                 \
-        , 'Invalid relabelings {}'.format(relabelings)
+          and relabelings[9]['replacement'] == '' and relabelings[9]['targetLabel'] == 'customer'                                         \
+          and relabelings[10]['replacement'] == 'default' and relabelings[10]['targetLabel'] == 'organization'                                   \
+          and relabelings[11]['sourceLabels'] == ['organization'] and relabelings[11]['regex'] == 'org-(.*)' and relabelings[11]['replacement'] == '${1}' and relabelings[11]['targetLabel'] == 'organization' \
+        , 'Invalid relabelings {} '.format(relabelings)
 
 @pytest.mark.smoke
 def test_service_monitor_labelling_schema_policy(servicemonitor) -> None:
@@ -133,6 +134,7 @@ def test_service_monitor_labelling_schema_policy(servicemonitor) -> None:
           and relabelings[6]['sourceLabels'] == ['__meta_kubernetes_pod_container_name'] and relabelings[6]['targetLabel'] == 'container' \
           and relabelings[7]['sourceLabels'] == ['__meta_kubernetes_pod_node_name'] and relabelings[7]['targetLabel'] == 'node'           \
           and relabelings[8]['sourceLabels'] == ['__meta_kubernetes_node_label_role'] and relabelings[8]['targetLabel'] == 'role'         \
-          and relabelings[9]['sourceLabels'] == ['__meta_kubernetes_node_label_role'] and relabelings[9]['targetLabel'] == 'role'         \
-          and relabelings[9]['regex'] == '' and relabelings[9]['replacement'] == 'worker'                                                 \
+          and relabelings[9]['replacement'] == '' and relabelings[9]['targetLabel'] == 'customer'                                         \
+          and relabelings[10]['replacement'] == 'default' and relabelings[10]['targetLabel'] == 'organization'                                   \
+          and relabelings[11]['sourceLabels'] == ['organization'] and relabelings[11]['regex'] == 'org-(.*)' and relabelings[11]['replacement'] == '${1}' and relabelings[11]['targetLabel'] == 'organization' \
         , 'Invalid relabelings {}'.format(relabelings)
