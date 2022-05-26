@@ -1,0 +1,6 @@
+managementCluster:
+  name: ""
+  customer: ""
+
+provider:
+  kind: ""
