@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add `app` and `service-priority labels `ServiceMonitor` and `PodMonitor`
+
 ## [0.1.0] - 2022-05-27
 
 ### Added
