@@ -14,17 +14,22 @@ spec:
           spec:
             endpoints:
               - relabelings:
-                  # Service Monitors are currently only supported on management clusters so we can enforce the cluster_id and cluster_type.
+                  # Service Monitors are currently only supported on management clusters, so we can enforce the cluster_id and cluster_type.
                 - replacement: "[[ .Values.managementCluster.name ]]"
                   targetLabel: cluster_id
                 - replacement: "management_cluster"
                   targetLabel: cluster_type
+                  # Since we only support management clusters, all resources are considered as highest service priority
+                - replacement: "highest"
+                  targetLabel: service_priority
                 - replacement: "[[ .Values.provider.kind ]]"
                   targetLabel: provider
                 - replacement: "[[ .Values.managementCluster.name ]]"
                   targetLabel: installation
                 - sourceLabels: [__meta_kubernetes_namespace]
                   targetLabel: namespace
+                - sourceLabels: [ __meta_kubernetes_pod_label_app_kubernetes_io_name ]
+                  targetLabel: app
                 - sourceLabels: [__meta_kubernetes_pod_name]
                   targetLabel: pod
                 - sourceLabels: [__meta_kubernetes_pod_container_name]
