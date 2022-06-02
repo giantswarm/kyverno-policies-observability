@@ -28,9 +28,7 @@ spec:
                   targetLabel: installation
                 - sourceLabels: [__meta_kubernetes_namespace]
                   targetLabel: namespace
-                  # If "app.kubernetes.io/instance" is used correctly eveywhere, it is a unique name identifying
-                  # the instance of an application, so it is safe to use as the "app" label on the metrics
-                - sourceLabels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+                - sourceLabels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
                   targetLabel: app
                 - sourceLabels: [__meta_kubernetes_pod_name]
                   targetLabel: pod
