@@ -109,13 +109,14 @@ def test_pod_monitor_labelling_schema_policy(podmonitor) -> None:
           and relabelings[4]['replacement'] == '' and relabelings[4]['targetLabel'] == 'installation'                                                      \
           and relabelings[5]['sourceLabels'] == ['__meta_kubernetes_namespace'] and relabelings[5]['targetLabel'] == 'namespace'                           \
           and relabelings[6]['sourceLabels'] == ['__meta_kubernetes_pod_label_app_kubernetes_io_name'] and relabelings[6]['targetLabel'] == 'app'          \
-          and relabelings[7]['sourceLabels'] == ['__meta_kubernetes_pod_name'] and relabelings[7]['targetLabel'] == 'pod'                                  \
-          and relabelings[8]['sourceLabels'] == ['__meta_kubernetes_pod_container_name'] and relabelings[8]['targetLabel'] == 'container'                  \
-          and relabelings[9]['sourceLabels'] == ['__meta_kubernetes_pod_node_name'] and relabelings[9]['targetLabel'] == 'node'                            \
-          and relabelings[10]['sourceLabels'] == ['__meta_kubernetes_node_label_role'] and relabelings[10]['targetLabel'] == 'role'                          \
-          and relabelings[11]['replacement'] == '' and relabelings[11]['targetLabel'] == 'customer'                                                          \
-          and relabelings[12]['replacement'] == 'default' and relabelings[12]['targetLabel'] == 'organization'                                             \
-          and relabelings[13]['sourceLabels'] == ['organization'] and relabelings[13]['regex'] == 'org-(.*)' and relabelings[13]['replacement'] == '${1}' and relabelings[13]['targetLabel'] == 'organization' \
+          and relabelings[7]['sourceLabels'] == ['__meta_kubernetes_pod_label_app_kubernetes_io_instance'] and relabelings[7]['targetLabel'] == 'instance' \
+          and relabelings[8]['sourceLabels'] == ['__meta_kubernetes_pod_name'] and relabelings[8]['targetLabel'] == 'pod'                                  \
+          and relabelings[9]['sourceLabels'] == ['__meta_kubernetes_pod_container_name'] and relabelings[9]['targetLabel'] == 'container'                  \
+          and relabelings[10]['sourceLabels'] == ['__meta_kubernetes_pod_node_name'] and relabelings[10]['targetLabel'] == 'node'                            \
+          and relabelings[11]['sourceLabels'] == ['__meta_kubernetes_node_label_role'] and relabelings[11]['targetLabel'] == 'role'                          \
+          and relabelings[12]['replacement'] == '' and relabelings[12]['targetLabel'] == 'customer'                                                          \
+          and relabelings[13]['replacement'] == 'default' and relabelings[13]['targetLabel'] == 'organization'                                             \
+          and relabelings[14]['sourceLabels'] == ['organization'] and relabelings[14]['regex'] == 'org-(.*)' and relabelings[14]['replacement'] == '${1}' and relabelings[14]['targetLabel'] == 'organization' \
         , 'Invalid relabelings {} '.format(relabelings)
 
 @pytest.mark.smoke
@@ -134,11 +135,12 @@ def test_service_monitor_labelling_schema_policy(servicemonitor) -> None:
           and relabelings[4]['replacement'] == '' and relabelings[4]['targetLabel'] == 'installation'                                                      \
           and relabelings[5]['sourceLabels'] == ['__meta_kubernetes_namespace'] and relabelings[5]['targetLabel'] == 'namespace'                           \
           and relabelings[6]['sourceLabels'] == ['__meta_kubernetes_pod_label_app_kubernetes_io_name'] and relabelings[6]['targetLabel'] == 'app'          \
-          and relabelings[7]['sourceLabels'] == ['__meta_kubernetes_pod_name'] and relabelings[7]['targetLabel'] == 'pod'                                  \
-          and relabelings[8]['sourceLabels'] == ['__meta_kubernetes_pod_container_name'] and relabelings[8]['targetLabel'] == 'container'                  \
-          and relabelings[9]['sourceLabels'] == ['__meta_kubernetes_pod_node_name'] and relabelings[9]['targetLabel'] == 'node'                            \
-          and relabelings[10]['sourceLabels'] == ['__meta_kubernetes_node_label_role'] and relabelings[10]['targetLabel'] == 'role'                          \
-          and relabelings[11]['replacement'] == '' and relabelings[11]['targetLabel'] == 'customer'                                                          \
-          and relabelings[12]['replacement'] == 'default' and relabelings[12]['targetLabel'] == 'organization'                                             \
-          and relabelings[13]['sourceLabels'] == ['organization'] and relabelings[13]['regex'] == 'org-(.*)' and relabelings[13]['replacement'] == '${1}' and relabelings[13]['targetLabel'] == 'organization' \
+          and relabelings[7]['sourceLabels'] == ['__meta_kubernetes_pod_label_app_kubernetes_io_instance'] and relabelings[7]['targetLabel'] == 'instance' \
+          and relabelings[8]['sourceLabels'] == ['__meta_kubernetes_pod_name'] and relabelings[8]['targetLabel'] == 'pod'                                  \
+          and relabelings[9]['sourceLabels'] == ['__meta_kubernetes_pod_container_name'] and relabelings[9]['targetLabel'] == 'container'                  \
+          and relabelings[10]['sourceLabels'] == ['__meta_kubernetes_pod_node_name'] and relabelings[10]['targetLabel'] == 'node'                            \
+          and relabelings[11]['sourceLabels'] == ['__meta_kubernetes_node_label_role'] and relabelings[11]['targetLabel'] == 'role'                          \
+          and relabelings[12]['replacement'] == '' and relabelings[12]['targetLabel'] == 'customer'                                                          \
+          and relabelings[13]['replacement'] == 'default' and relabelings[13]['targetLabel'] == 'organization'                                             \
+          and relabelings[14]['sourceLabels'] == ['organization'] and relabelings[14]['regex'] == 'org-(.*)' and relabelings[14]['replacement'] == '${1}' and relabelings[14]['targetLabel'] == 'organization' \
         , 'Invalid relabelings {}'.format(relabelings)
