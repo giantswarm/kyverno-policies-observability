@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.2] - 2022-06-07
 
+### Added
+
+- Add `instance` label based on `app.kubernetes.io/instance` to pod and service monitorsg
+
 ## [0.1.1] - 2022-06-02
 
 ### Added
