@@ -6,9 +6,10 @@ spec:
   rules:
     - name: configure-service-monitor-labelling-schema
       match:
-        resources:
-          kinds:
-          - monitoring.coreos.com/v1/ServiceMonitor
+        any:
+        - resources:
+            kinds:
+            - monitoring.coreos.com/v1/ServiceMonitor
       mutate:
         foreach:
         - list: request.object.spec.endpoints
@@ -57,9 +58,7 @@ spec:
             ## We get the organization from the namespace (org-organization_name)
             - path: "/spec/endpoints/{{elementIndex}}/relabelings/-1"
               op: add
-              # TODO: fix request.namespace templating
-              value: {"replacement": "default", "targetLabel": "organization"}
-            #   value: {"replacement": "{#{ request.namespace }}", "targetLabel": "organization"}
+              value: {"replacement": "{{ request.namespace }}", "targetLabel": "organization"}
             ## Then we remove the org prefix
             - path: "/spec/endpoints/{{elementIndex}}/relabelings/-1"
               op: add
