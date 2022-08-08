@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - README: instructions to run local tests
-- podMonitor and serviceMoniter relabeling are added to existing config, rather than replacing it
+- podMonitor and serviceMoniter relabeling are added to existing config, rather than replacing it. Warning: that means their behavior could change!
 
 ## [0.1.3] - 2022-08-05
 
