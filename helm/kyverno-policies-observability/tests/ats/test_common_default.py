@@ -112,9 +112,9 @@ def test_pod_monitor_labelling_schema_policy(podmonitor) -> None:
           and relabelings[7]['sourceLabels'] == ['__meta_kubernetes_pod_label_app_kubernetes_io_instance'] and relabelings[7]['targetLabel'] == 'instance' \
           and relabelings[8]['sourceLabels'] == ['__meta_kubernetes_pod_name'] and relabelings[8]['targetLabel'] == 'pod'                                  \
           and relabelings[9]['sourceLabels'] == ['__meta_kubernetes_pod_container_name'] and relabelings[9]['targetLabel'] == 'container'                  \
-          and relabelings[10]['sourceLabels'] == ['__meta_kubernetes_pod_node_name'] and relabelings[10]['targetLabel'] == 'node'                            \
-          and relabelings[11]['sourceLabels'] == ['__meta_kubernetes_node_label_role'] and relabelings[11]['targetLabel'] == 'role'                          \
-          and relabelings[12]['replacement'] == '' and relabelings[12]['targetLabel'] == 'customer'                                                          \
+          and relabelings[10]['sourceLabels'] == ['__meta_kubernetes_pod_node_name'] and relabelings[10]['targetLabel'] == 'node'                          \
+          and relabelings[11]['sourceLabels'] == ['__meta_kubernetes_node_label_role'] and relabelings[11]['targetLabel'] == 'role'                        \
+          and relabelings[12]['replacement'] == '' and relabelings[12]['targetLabel'] == 'customer'                                                        \
           and relabelings[13]['replacement'] == 'default' and relabelings[13]['targetLabel'] == 'organization'                                             \
           and relabelings[14]['sourceLabels'] == ['organization'] and relabelings[14]['regex'] == 'org-(.*)' and relabelings[14]['replacement'] == '${1}' and relabelings[14]['targetLabel'] == 'organization' \
         , 'Invalid relabelings {} '.format(relabelings)
@@ -128,19 +128,20 @@ def test_service_monitor_labelling_schema_policy(servicemonitor) -> None:
     endpoints = servicemonitor['spec']['endpoints']
     for endpoint in endpoints:
         relabelings = endpoint['relabelings']
-        assert relabelings[0]['replacement'] == '' and relabelings[0]['targetLabel'] == 'cluster_id'                                                       \
-          and relabelings[1]['replacement'] == 'management_cluster' and relabelings[1]['targetLabel'] == 'cluster_type'                                    \
-          and relabelings[2]['replacement'] == 'highest' and relabelings[2]['targetLabel'] == 'service_priority'                                           \
-          and relabelings[3]['replacement'] == '' and relabelings[3]['targetLabel'] == 'provider'                                                          \
-          and relabelings[4]['replacement'] == '' and relabelings[4]['targetLabel'] == 'installation'                                                      \
-          and relabelings[5]['sourceLabels'] == ['__meta_kubernetes_namespace'] and relabelings[5]['targetLabel'] == 'namespace'                           \
-          and relabelings[6]['sourceLabels'] == ['__meta_kubernetes_pod_label_app_kubernetes_io_name'] and relabelings[6]['targetLabel'] == 'app'          \
-          and relabelings[7]['sourceLabels'] == ['__meta_kubernetes_pod_label_app_kubernetes_io_instance'] and relabelings[7]['targetLabel'] == 'instance' \
-          and relabelings[8]['sourceLabels'] == ['__meta_kubernetes_pod_name'] and relabelings[8]['targetLabel'] == 'pod'                                  \
-          and relabelings[9]['sourceLabels'] == ['__meta_kubernetes_pod_container_name'] and relabelings[9]['targetLabel'] == 'container'                  \
-          and relabelings[10]['sourceLabels'] == ['__meta_kubernetes_pod_node_name'] and relabelings[10]['targetLabel'] == 'node'                            \
-          and relabelings[11]['sourceLabels'] == ['__meta_kubernetes_node_label_role'] and relabelings[11]['targetLabel'] == 'role'                          \
-          and relabelings[12]['replacement'] == '' and relabelings[12]['targetLabel'] == 'customer'                                                          \
-          and relabelings[13]['replacement'] == 'default' and relabelings[13]['targetLabel'] == 'organization'                                             \
-          and relabelings[14]['sourceLabels'] == ['organization'] and relabelings[14]['regex'] == 'org-(.*)' and relabelings[14]['replacement'] == '${1}' and relabelings[14]['targetLabel'] == 'organization' \
+        assert relabelings[0]['targetLabel'] == 'app'                                                                                                      \
+          and relabelings[1]['replacement'] == '' and relabelings[1]['targetLabel'] == 'cluster_id'                                                        \
+          and relabelings[2]['replacement'] == 'management_cluster' and relabelings[2]['targetLabel'] == 'cluster_type'                                    \
+          and relabelings[3]['replacement'] == 'highest' and relabelings[3]['targetLabel'] == 'service_priority'                                           \
+          and relabelings[4]['replacement'] == '' and relabelings[4]['targetLabel'] == 'provider'                                                          \
+          and relabelings[5]['replacement'] == '' and relabelings[5]['targetLabel'] == 'installation'                                                      \
+          and relabelings[6]['sourceLabels'] == ['__meta_kubernetes_namespace'] and relabelings[6]['targetLabel'] == 'namespace'                           \
+          and relabelings[7]['sourceLabels'] == ['__meta_kubernetes_pod_label_app_kubernetes_io_name'] and relabelings[7]['targetLabel'] == 'app'          \
+          and relabelings[8]['sourceLabels'] == ['__meta_kubernetes_pod_label_app_kubernetes_io_instance'] and relabelings[8]['targetLabel'] == 'instance' \
+          and relabelings[9]['sourceLabels'] == ['__meta_kubernetes_pod_name'] and relabelings[9]['targetLabel'] == 'pod'                                  \
+          and relabelings[10]['sourceLabels'] == ['__meta_kubernetes_pod_container_name'] and relabelings[10]['targetLabel'] == 'container'                \
+          and relabelings[11]['sourceLabels'] == ['__meta_kubernetes_pod_node_name'] and relabelings[11]['targetLabel'] == 'node'                          \
+          and relabelings[12]['sourceLabels'] == ['__meta_kubernetes_node_label_role'] and relabelings[12]['targetLabel'] == 'role'                        \
+          and relabelings[13]['replacement'] == '' and relabelings[13]['targetLabel'] == 'customer'                                                        \
+          and relabelings[14]['replacement'] == 'default' and relabelings[14]['targetLabel'] == 'organization'                                             \
+          and relabelings[15]['sourceLabels'] == ['organization'] and relabelings[15]['regex'] == 'org-(.*)' and relabelings[15]['replacement'] == '${1}' and relabelings[15]['targetLabel'] == 'organization' \
         , 'Invalid relabelings {}'.format(relabelings)
