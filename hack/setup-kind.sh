@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
 # Giant Swarm CRDs
-kubectl create --context kind-kyverno-cluster -f https://raw.githubusercontent.com/giantswarm/apiextensions/15836a106059cc8d201e1237adf44aec340bbab6/helm/crds-common/templates/giantswarm.yaml -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.56.2/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.56.2/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
+kubectl create --context kind-kyverno-cluster \
+    -f https://raw.githubusercontent.com/giantswarm/apiextensions/v3.39.0/helm/crds-common/templates/giantswarm.yaml \
+    -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.56.2/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml \
+    -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.56.2/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
 
 MOCK_CREDENTIALS=$(echo -n "something" | base64)
 
