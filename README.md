@@ -16,18 +16,20 @@ These scripts enable us to easily set up a local testing environment.
 
 There are only very few prerequisites for local testing:
 1. `make` has to be installed
-2. `kubectl` has to be installed
-3. `kind` has to be installed
-4. [dabs.sh](https://raw.githubusercontent.com/giantswarm/app-build-suite/v1.0.4/dabs.sh) has to be accessible.
-5. [dats.sh](https://raw.githubusercontent.com/giantswarm/app-test-suite/v0.1.4/dats.sh) has to be accessible.
+1. `kubectl` has to be installed
+1. `kind` has to be installed
+1. `clusterctl` has to be installed (you may need an older version, like 0.4.8)
+1. [dabs.sh](https://raw.githubusercontent.com/giantswarm/app-build-suite/v1.0.4/dabs.sh) has to be accessible.
+1. [dats.sh](https://raw.githubusercontent.com/giantswarm/app-test-suite/v0.1.4/dats.sh) has to be accessible.
 
 Tests are implemented with [pytest](https://docs.pytest.org) with plugin [pytest-helm-charts](https://github.com/giantswarm/pytest-helm-charts).
 
 Executing the integration tests can be done with this simple set of commands:
 ```bash
-make setup # Creates the kind cluster and installs all dependencies.
-dabs.sh --generate-metadata -c ./helm/policies-aws # Builds helm chart archive to be tested.
-./dats.sh --chart-file $(ls -1 -t policies-aws*.tgz | head -n 1) # Executes the tests related to the AWS policies against the kind cluster.
+make kind-create kind-get-kubeconfig install-kyverno # Creates the kind cluster and installs all dependencies.
+./dabs.sh --generate-metadata -c ./helm/kyverno-policies-observability # Builds helm chart archive to be tested.
+cp build/kyverno-policies-observability-*.tgz kyverno-policies-observability.tgz
+./dats.sh --chart-file kyverno-policies-observability.tgz --app-tests-pytest-tests-dir helm/kyverno-policies-observability/tests/ats # Executes the tests
 ```
 
 To only generate the policies in the `helm` folder structure:
