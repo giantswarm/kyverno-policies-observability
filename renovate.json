@@ -3,7 +3,7 @@
     "config:base",
     ":reviewer(team:team-atlas)"
   ],
-  "labels": ["dependencies"],
+  "labels": ["dependencies", "renovate"],
   "assigneesFromCodeOwners": true,
   "packageRules": [
     {
