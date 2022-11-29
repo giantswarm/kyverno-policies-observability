@@ -190,6 +190,20 @@ workflows:
               only: /^v.*/
 
       - architect/push-to-app-collection:
+          name: push-kyverno-policies-observability-to-gcp-app-collection
+          context: architect
+          app_name: "kyverno-policies-observability"
+          app_namespace: "giantswarm"
+          app_collection_repo: "gcp-app-collection"
+          requires:
+            - push-kyverno-policies-observability-to-catalog
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+
+      - architect/push-to-app-collection:
           name: push-kyverno-policies-observability-to-openstack-app-collection
           context: architect
           app_name: "kyverno-policies-observability"
