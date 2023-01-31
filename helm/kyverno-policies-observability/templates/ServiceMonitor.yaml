@@ -3,6 +3,8 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: configure-service-monitor-labelling-schema
+  labels:
+    {{ include "labels.common" . | nindent 4 }}
 spec:
   rules:
     - name: configure-service-monitor-labelling-schema

@@ -3,6 +3,8 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: always-allow-heartbeat
+  labels:
+    {{ include "labels.common" . | nindent 4 }}
 spec:
   rules:
     - name: always-allow-heartbeat

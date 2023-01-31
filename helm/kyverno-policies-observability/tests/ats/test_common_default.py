@@ -1,11 +1,6 @@
 import sys
 sys.path.append('../../../tests')
 
-import yaml
-from functools import partial
-import time
-import random
-import string
 import ensure
 from textwrap import dedent
 
@@ -27,7 +22,6 @@ from ensure import silence_with_matchers
 from ensure import servicemonitor
 
 import pytest
-from pytest_kube import forward_requests, wait_for_rollout, app_template
 
 import logging
 LOGGER = logging.getLogger(__name__)
