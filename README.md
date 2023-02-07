@@ -18,9 +18,9 @@ There are only very few prerequisites for local testing:
 1. `make` has to be installed
 1. `kubectl` has to be installed
 1. `kind` has to be installed
-1. `clusterctl` has to be installed (you may need an older version, like 0.4.8)
-1. [dabs.sh](https://raw.githubusercontent.com/giantswarm/app-build-suite/v1.0.4/dabs.sh) has to be accessible.
-1. [dats.sh](https://raw.githubusercontent.com/giantswarm/app-test-suite/v0.1.4/dats.sh) has to be accessible.
+1. `clusterctl` has to be installed (you may need an older version, like 1.3.2)
+1. [dabs.sh](https://raw.githubusercontent.com/giantswarm/app-build-suite/v1.1.4/dabs.sh) has to be accessible.
+1. [dats.sh](https://raw.githubusercontent.com/giantswarm/app-test-suite/v0.2.9/dats.sh) has to be accessible.
 
 Tests are implemented with [pytest](https://docs.pytest.org) with plugin [pytest-helm-charts](https://github.com/giantswarm/pytest-helm-charts).
 

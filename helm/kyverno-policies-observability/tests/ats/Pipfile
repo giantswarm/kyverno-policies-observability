@@ -4,17 +4,18 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pre-commit = "==2.11.1"
-setuptools = "==54.0.0"
+pre-commit = "==3.0.2"
+setuptools = "==54.2.0"
 
 [packages]
-pytest-kube = {git = "https://github.com/giantswarm/pytest-kube.git", editable = false, ref = "kubectl"}
-pytest = "==6.2.2"
-pykube-ng = "==21.3.0"
+pytest-helm-charts = ">=1.0.2"
+pytest = "==7.2.1"
+pykube-ng = "==22.9.0"
 pyyaml = "==5.4.1"
 pytest-rerunfailures = "==9.1.1"
-requests = "==2.25.1"
-setuptools = "==54.0.0"
+requests = "==2.28.2"
+setuptools = "==54.2.0"
+exceptiongroup = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"

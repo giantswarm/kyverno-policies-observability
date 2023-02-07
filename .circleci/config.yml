@@ -9,7 +9,7 @@ commands:
     parameters:
       ats_version:
         type: string
-        default: 0.1.4
+        default: 0.2.9
       chart_archive_prefix:
         type: string
       tests_dir:
@@ -40,9 +40,10 @@ jobs:
     machine:
       image: ubuntu-2004:202010-01
     environment:
-      KIND_VERSION: v0.11.1
-      KUBERNETES_VERSION: v1.21.1
-      DABS_VERSION: v1.0.4
+      KIND_VERSION: v0.14.0
+      KUBERNETES_VERSION: v1.24.0
+      DABS_VERSION: v1.1.4
+      CLUSTER_API_VERSION: v1.3.2
     steps:
       - checkout
       - run:
@@ -64,7 +65,7 @@ jobs:
       - run:
           name: Install clusterctl
           command: |
-            curl -L https://github.com/kubernetes-sigs/cluster-api/releases/download/v0.4.7/clusterctl-linux-amd64 -o clusterctl && chmod +x clusterctl  && sudo mv clusterctl /usr/bin
+            curl -L https://github.com/kubernetes-sigs/cluster-api/releases/download/$CLUSTER_API_VERSION/clusterctl-linux-amd64 -o clusterctl && chmod +x clusterctl  && sudo mv clusterctl /usr/bin
       - run:
           name: Create kind cluster and install kyverno
           command: |
