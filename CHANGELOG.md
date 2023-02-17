@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Push to `cloud-director` app collection.
 - Remove deprecated `validate` step from CI.
 
+### Changed
+
+- tests: Update dependency setuptools from v67.2.0 to v67.3.2
+
 ## [0.2.2] - 2022-11-29
 
 - push to GCP collection
