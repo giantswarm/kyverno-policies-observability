@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
+### Changed
 
-- push to `capz` app collection
+- Push to `capz` app collection.
+- Push to `vsphere` app collection.
+- Don't push to `openstack` app collection.
 
 ### Fixed
 
