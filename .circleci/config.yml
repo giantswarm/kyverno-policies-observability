@@ -183,11 +183,11 @@ workflows:
               only: /^v.*/
 
       - architect/push-to-app-collection:
-          name: push-kyverno-policies-observability-to-openstack-app-collection
+          name: push-kyverno-policies-observability-to-vsphere-app-collection
           context: architect
           app_name: "kyverno-policies-observability"
           app_namespace: "giantswarm"
-          app_collection_repo: "openstack-app-collection"
+          app_collection_repo: "vsphere-app-collection"
           requires:
             - push-kyverno-policies-observability-to-catalog
           filters:
