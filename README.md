@@ -52,7 +52,7 @@ def awscluster(kubernetes_cluster):
     # Yaml of whatever resource you want to create.
     # The cluster_name variable is defined globally in ensure.py - so we always reuse the same names.
     c = dedent(f"""
-        apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: AWSCluster
         metadata:
           name: {cluster_name}
