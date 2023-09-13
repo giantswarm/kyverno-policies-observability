@@ -12,15 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Push to `capz` app collection.
 - Push to `vsphere` app collection.
 - Don't push to `openstack` app collection.
+- tests: Update dependency setuptools from v67.2.0 to v67.3.2
 
 ### Fixed
 
 - Push to `cloud-director` app collection.
 - Remove deprecated `validate` step from CI.
-
-### Changed
-
-- tests: Update dependency setuptools from v67.2.0 to v67.3.2
+- Only apply podmonitor and servicemonitor policies on creation (https://github.com/giantswarm/giantswarm/issues/27288)
 
 ## [0.2.2] - 2022-11-29
 

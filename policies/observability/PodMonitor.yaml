@@ -12,6 +12,11 @@ spec:
         - resources:
             kinds:
             - monitoring.coreos.com/v1/PodMonitor
+      preconditions:
+        all:
+        - key: '{{ request.operation || ''BACKGROUND'' }}'
+          operator: Equals
+          value: CREATE
       mutate:
         foreach:
         - list: request.object.spec.podMetricsEndpoints

@@ -13,6 +13,11 @@ spec:
         - resources:
             kinds:
             - monitoring.coreos.com/v1/ServiceMonitor
+      preconditions:
+        all:
+        - key: '{{ `{{` }} request.operation || ''BACKGROUND'' {{ `}}` }}'
+          operator: Equals
+          value: CREATE
       mutate:
         foreach:
         - list: request.object.spec.endpoints
