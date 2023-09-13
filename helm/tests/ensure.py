@@ -69,7 +69,7 @@ def release(kube_cluster: Cluster):
 @pytest.fixture
 def cluster(kube_cluster: Cluster):
     c = dedent(f"""
-        apiVersion: cluster.x-k8s.io/v1alpha3
+        apiVersion: cluster.x-k8s.io/v1beta1
         kind: Cluster
         metadata:
           name: {cluster_name}
@@ -84,11 +84,11 @@ def cluster(kube_cluster: Cluster):
               cidrBlocks:
                 - 192.168.0.0/16
           controlPlaneRef:
-            apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+            apiVersion: controlplane.cluster.x-k8s.io/v1beta1
             kind: KubeadmControlPlane
             name: {cluster_name}-control-plane
           infrastructureRef:
-            apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+            apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
             kind: AWSCluster
             name: {cluster_name}
     """)
@@ -107,9 +107,9 @@ def cluster(kube_cluster: Cluster):
     LOGGER.info(f"Cluster {cluster_name} deleted")
 
 @pytest.fixture
-def cluster_v1alpha4(kube_cluster: Cluster):
+def cluster_v1beta1(kube_cluster: Cluster):
     c = dedent(f"""
-        apiVersion: cluster.x-k8s.io/v1alpha4
+        apiVersion: cluster.x-k8s.io/v1beta1
         kind: Cluster
         metadata:
           name: {cluster_name}
@@ -124,11 +124,11 @@ def cluster_v1alpha4(kube_cluster: Cluster):
               cidrBlocks:
                 - 192.168.0.0/16
           controlPlaneRef:
-            apiVersion: controlplane.cluster.x-k8s.io/v1alpha4
+            apiVersion: controlplane.cluster.x-k8s.io/v1beta1
             kind: KubeadmControlPlane
             name: {cluster_name}-control-plane
           infrastructureRef:
-            apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+            apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
             kind: AWSCluster
             name: {cluster_name}
     """)
@@ -150,7 +150,7 @@ def cluster_v1alpha4(kube_cluster: Cluster):
 @pytest.fixture
 def machinedeployment(kube_cluster: Cluster):
     md = dedent(f"""
-        apiVersion: cluster.x-k8s.io/v1alpha3
+        apiVersion: cluster.x-k8s.io/v1beta1
         kind: MachineDeployment
         metadata:
           name: {cluster_name}
@@ -170,12 +170,12 @@ def machinedeployment(kube_cluster: Cluster):
             spec:
               bootstrap:
                 configRef:
-                  apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+                  apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
                   kind: KubeadmConfigTemplate
                   name: {cluster_name}
               clusterName: {cluster_name}
               infrastructureRef:
-                apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+                apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
                 kind: AWSMachineTemplate
                 name: {cluster_name}
               version: v1.19.7
@@ -197,7 +197,7 @@ def machinedeployment(kube_cluster: Cluster):
 @pytest.fixture
 def kubeadmconfig(kube_cluster: Cluster):
     md = dedent(f"""
-        apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+        apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
         kind: KubeadmConfig
         metadata:
           name: {cluster_name}
@@ -223,7 +223,7 @@ def kubeadmconfig(kube_cluster: Cluster):
 @pytest.fixture
 def kubeadmconfig_with_labels(kube_cluster: Cluster):
     md = dedent(f"""
-        apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+        apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
         kind: KubeadmConfig
         metadata:
           name: {cluster_name}
@@ -254,7 +254,7 @@ def kubeadmconfig_with_labels(kube_cluster: Cluster):
 @pytest.fixture
 def kubeadmconfig_with_files(kube_cluster: Cluster):
     md = dedent(f"""
-        apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+        apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
         kind: KubeadmConfig
         metadata:
           name: {cluster_name}
@@ -287,7 +287,7 @@ def kubeadmconfig_with_files(kube_cluster: Cluster):
 @pytest.fixture
 def kubeadmconfig_with_audit_file(kube_cluster: Cluster):
     md = dedent(f"""
-        apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+        apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
         kind: KubeadmConfig
         metadata:
           name: {cluster_name}
@@ -320,7 +320,7 @@ def kubeadmconfig_with_audit_file(kube_cluster: Cluster):
 @pytest.fixture
 def kubeadmconfig_with_role_labels(kube_cluster: Cluster):
     md = dedent(f"""
-        apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+        apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
         kind: KubeadmConfig
         metadata:
           name: {cluster_name}
@@ -351,7 +351,7 @@ def kubeadmconfig_with_role_labels(kube_cluster: Cluster):
 @pytest.fixture
 def kubeadmconfig_with_kubelet_args(kube_cluster: Cluster):
     md = dedent(f"""
-        apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+        apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
         kind: KubeadmConfig
         metadata:
           name: {cluster_name}
@@ -384,7 +384,7 @@ def kubeadmconfig_with_kubelet_args(kube_cluster: Cluster):
 @pytest.fixture
 def kubeadmconfig_controlplane(kube_cluster: Cluster):
     md = dedent(f"""
-        apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+        apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
         kind: KubeadmConfig
         metadata:
           name: {cluster_name}
@@ -411,9 +411,9 @@ def kubeadmconfig_controlplane(kube_cluster: Cluster):
 # CAPA fixtures
 
 @pytest.fixture
-def awscluster_v1alpha3(kube_cluster: Cluster):
+def awscluster_v1beta1(kube_cluster: Cluster):
     c = dedent(f"""
-        apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: AWSCluster
         metadata:
           name: {cluster_name}
@@ -430,7 +430,7 @@ def awscluster_v1alpha3(kube_cluster: Cluster):
     LOGGER.info(f"AWSCluster {cluster_name} applied")
 
     raw = kube_cluster.kubectl(
-        f"get awsclusters.v1alpha3.infrastructure.cluster.x-k8s.io {cluster_name}", output_format="yaml")
+        f"get awsclusters.v1beta1.infrastructure.cluster.x-k8s.io {cluster_name}", output_format="yaml")
 
     awscluster = yaml.safe_load(raw)
 
@@ -440,9 +440,9 @@ def awscluster_v1alpha3(kube_cluster: Cluster):
     LOGGER.info(f"AWSCluster {cluster_name} deleted")
 
 @pytest.fixture
-def awscluster_v1alpha3_empty(kube_cluster: Cluster):
+def awscluster_v1beta1_empty(kube_cluster: Cluster):
     c = dedent(f"""
-        apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: AWSCluster
         metadata:
           name: {cluster_name}
@@ -456,7 +456,7 @@ def awscluster_v1alpha3_empty(kube_cluster: Cluster):
     LOGGER.info(f"AWSCluster {cluster_name} applied")
 
     raw = kube_cluster.kubectl(
-        f"get awsclusters.v1alpha3.infrastructure.cluster.x-k8s.io {cluster_name}", output_format="yaml")
+        f"get awsclusters.v1beta1.infrastructure.cluster.x-k8s.io {cluster_name}", output_format="yaml")
 
     awscluster = yaml.safe_load(raw)
 
@@ -466,9 +466,9 @@ def awscluster_v1alpha3_empty(kube_cluster: Cluster):
     LOGGER.info(f"AWSCluster {cluster_name} deleted")
 
 @pytest.fixture
-def awscluster_v1alpha3_empty_labeled(kube_cluster: Cluster):
+def awscluster_v1beta1_empty_labeled(kube_cluster: Cluster):
     c = dedent(f"""
-        apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: AWSCluster
         metadata:
           name: {cluster_name}
@@ -483,7 +483,7 @@ def awscluster_v1alpha3_empty_labeled(kube_cluster: Cluster):
     LOGGER.info(f"AWSCluster {cluster_name} applied")
 
     raw = kube_cluster.kubectl(
-        f"get awsclusters.v1alpha3.infrastructure.cluster.x-k8s.io {cluster_name}", output_format="yaml")
+        f"get awsclusters.v1beta1.infrastructure.cluster.x-k8s.io {cluster_name}", output_format="yaml")
 
     awscluster = yaml.safe_load(raw)
 
@@ -495,7 +495,7 @@ def awscluster_v1alpha3_empty_labeled(kube_cluster: Cluster):
 @pytest.fixture
 def awsmachinetemplate(kube_cluster: Cluster):
     c = dedent(f"""
-      apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+      apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
       kind: AWSMachineTemplate
       metadata:
         labels:
@@ -527,7 +527,7 @@ def awsmachinetemplate(kube_cluster: Cluster):
 @pytest.fixture
 def awsmachinepool(kube_cluster: Cluster):
     c = dedent(f"""
-      apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+      apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
       kind: AWSMachinePool
       metadata:
         labels:
@@ -564,7 +564,7 @@ def awsmachinepool(kube_cluster: Cluster):
 @pytest.fixture
 def awsclusterroleidentity(kube_cluster: Cluster):
     c = dedent(f"""
-        apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: AWSClusterRoleIdentity
         metadata:
           labels:
@@ -598,7 +598,7 @@ def awsclusterroleidentity(kube_cluster: Cluster):
 @pytest.fixture
 def azurecluster(kube_cluster: Cluster):
     c = dedent(f"""
-        apiVersion: infrastructure.cluster.x-k8s.io/v1alpha4
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: AzureCluster
         metadata:
           name: {cluster_name}
@@ -626,7 +626,7 @@ def azurecluster(kube_cluster: Cluster):
 @pytest.fixture
 def azuremachinepool(kube_cluster: Cluster):
     c = dedent(f"""
-        apiVersion: infrastructure.cluster.x-k8s.io/v1alpha4
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: AzureMachinePool
         metadata:
           name: {machinepool_name}
@@ -669,7 +669,7 @@ def azuremachinepool(kube_cluster: Cluster):
 @pytest.fixture
 def kubeadm_control_plane(kube_cluster: Cluster):
     c = dedent(f"""
-        apiVersion: controlplane.cluster.x-k8s.io/v1alpha4
+        apiVersion: controlplane.cluster.x-k8s.io/v1beta1
         kind: KubeadmControlPlane
         metadata:
           labels:
@@ -694,7 +694,7 @@ def kubeadm_control_plane(kube_cluster: Cluster):
                   allocate-node-cidrs: "false"
           machineTemplate:
             infrastructureRef:
-              apiVersion: infrastructure.cluster.x-k8s.io/v1alpha4
+              apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
               kind: AWSMachineTemplate
               name: {cluster_name}
           version: 1.22.0
