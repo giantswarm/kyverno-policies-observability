@@ -17,52 +17,12 @@ spec:
         foreach:
         - list: request.object.spec.podMetricsEndpoints
           patchesJson6902: |-
-            # Pod Monitors are currently only supported on management clusters, so we can enforce the cluster_id and cluster_type.
-            - path: "/spec/podMetricsEndpoints/{{ `{{` }}elementIndex{{ `}}` }}/relabelings/-1"
-              op: add
-              value: {"replacement": "{{ .Values.managementCluster.name }}", "targetLabel": "cluster_id"}
-            - path: "/spec/podMetricsEndpoints/{{ `{{` }}elementIndex{{ `}}` }}/relabelings/-1"
-              op: add
-              value: {"replacement": "management_cluster", "targetLabel": "cluster_type"}
-            # Since we only support management clusters, all resources are considered as highest service priority
-            - path: "/spec/podMetricsEndpoints/{{ `{{` }}elementIndex{{ `}}` }}/relabelings/-1"
-              op: add
-              value: {"replacement": "highest", "targetLabel": "service_priority"}
-            - path: "/spec/podMetricsEndpoints/{{ `{{` }}elementIndex{{ `}}` }}/relabelings/-1"
-              op: add
-              value: {"replacement": "{{ .Values.provider.kind }}", "targetLabel": "provider"}
-            - path: "/spec/podMetricsEndpoints/{{ `{{` }}elementIndex{{ `}}` }}/relabelings/-1"
-              op: add
-              value: {"replacement": "{{ .Values.managementCluster.name }}", "targetLabel": "installation"}
-            - path: "/spec/podMetricsEndpoints/{{ `{{` }}elementIndex{{ `}}` }}/relabelings/-1"
-              op: add
-              value: {"sourceLabels": ["namespace", "__meta_kubernetes_namespace"], "action": "replace", "separator": ";", "regex": ";(.*)", "replacement": "$1", "targetLabel": "namespace"}
             - path: "/spec/podMetricsEndpoints/{{ `{{` }}elementIndex{{ `}}` }}/relabelings/-1"
               op: add
               value: {"sourceLabels": ["__meta_kubernetes_pod_label_app_kubernetes_io_name"], "targetLabel": "app"}
-            - path: "/spec/podMetricsEndpoints/{{ `{{` }}elementIndex{{ `}}` }}/relabelings/-1"
-              op: add
-              value: {"sourceLabels": ["__meta_kubernetes_pod_label_app_kubernetes_io_instance"], "targetLabel": "instance"}
-            - path: "/spec/podMetricsEndpoints/{{ `{{` }}elementIndex{{ `}}` }}/relabelings/-1"
-              op: add
-              value: {"sourceLabels": ["__meta_kubernetes_pod_name"], "targetLabel": "pod"}
-            - path: "/spec/podMetricsEndpoints/{{ `{{` }}elementIndex{{ `}}` }}/relabelings/-1"
-              op: add
-              value: {"sourceLabels": ["__meta_kubernetes_pod_container_name"], "targetLabel": "container"}
             - path: "/spec/podMetricsEndpoints/{{ `{{` }}elementIndex{{ `}}` }}/relabelings/-1"
               op: add
               value: {"sourceLabels": ["__meta_kubernetes_pod_node_name"], "targetLabel": "node"}
             - path: "/spec/podMetricsEndpoints/{{ `{{` }}elementIndex{{ `}}` }}/relabelings/-1"
               op: add
               value: {"sourceLabels": ["__meta_kubernetes_node_label_role"], "targetLabel": "role"}
-            - path: "/spec/podMetricsEndpoints/{{ `{{` }}elementIndex{{ `}}` }}/relabelings/-1"
-              op: add
-              value: {"replacement": "{{ .Values.managementCluster.customer }}", "targetLabel": "customer"}
-            ## We get the organization from the namespace (org-organization_name)
-            - path: "/spec/podMetricsEndpoints/{{ `{{` }}elementIndex{{ `}}` }}/relabelings/-1"
-              op: add
-              value: {"replacement": "{{ `{{` }} request.namespace {{ `}}` }}", "targetLabel": "organization"}
-            ## Then we remove the org prefix
-            - path: "/spec/podMetricsEndpoints/{{ `{{` }}elementIndex{{ `}}` }}/relabelings/-1"
-              op: add
-              value: {"sourceLabels": ["organization"], "regex": "org-(.*)", "replacement": "${1}", "targetLabel": "organization"}
