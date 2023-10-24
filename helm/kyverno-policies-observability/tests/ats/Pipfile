@@ -9,7 +9,7 @@ setuptools = "==68.2.2"
 
 [packages]
 pytest-helm-charts = ">=1.1.2"
-pytest = "==7.4.2"
+pytest = "==7.4.3"
 pykube-ng = "==23.6.0"
 pyyaml = "==6.0.1"
 pytest-rerunfailures = "==12.0"
