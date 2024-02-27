@@ -9,7 +9,7 @@ commands:
     parameters:
       ats_version:
         type: string
-        default: 0.4.1
+        default: 0.5.0
       chart_archive_prefix:
         type: string
       tests_dir:
@@ -40,10 +40,10 @@ jobs:
     machine:
       image: ubuntu-2004:202010-01
     environment:
-      KIND_VERSION: v0.14.0
+      KIND_VERSION: v0.22.0
       KUBERNETES_VERSION: v1.24.0
-      DABS_VERSION: v1.1.4
-      CLUSTER_API_VERSION: v1.3.2
+      DABS_VERSION: v1.2.2
+      CLUSTER_API_VERSION: v1.6.2
     steps:
       - checkout
       - run:
