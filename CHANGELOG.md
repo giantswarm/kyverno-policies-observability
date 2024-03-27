@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Add `all_pipelines` label to the silence kyverno policy to let some custom alerts through.
+
 ## [0.3.0] - 2023-10-09
 
 ### Changed
