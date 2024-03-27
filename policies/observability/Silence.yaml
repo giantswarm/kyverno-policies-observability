@@ -1,12 +1,12 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: always-allow-heartbeat
+  name: always-allow-heartbeats-and-all-pipelines-alerts
   labels:
     [[ include "labels.common" . | nindent 4 ]]
 spec:
   rules:
-    - name: always-allow-heartbeat
+    - name: always-allow-heartbeats-and-all-pipelines-alerts
       match:
         resources:
           kinds:
@@ -16,3 +16,6 @@ spec:
           - path: "/spec/matchers/-"
             op: add
             value: {"name": "alertname", "value": "Heartbeat", "isEqual": false, "isRegex": false}
+          - path: "/spec/matchers/-"
+            op: add
+            value: {"name": "all_pipelines", "value": "true", "isEqual": false, "isRegex": false}
