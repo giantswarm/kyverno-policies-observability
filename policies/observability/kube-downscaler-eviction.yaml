@@ -12,7 +12,7 @@ spec:
             kinds:
             - Deployment
             - StatefulSet
-            - autoscaling/v2/HorizontalPodAutoscaler
+            # - autoscaling/v2/HorizontalPodAutoscaler
           namespaces:
             - mimir
             - loki
