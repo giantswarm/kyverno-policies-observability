@@ -1,0 +1,24 @@
+# THIS FILE IS GENERATED WITH 'make generate' - DO NOT EDIT MANUALLY
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: evict-kube-downscaler
+spec:
+  validationFailureAction: Enforce
+  rules:
+    - name: inject-proxy-env-to-containers
+      match:
+        all:
+        - resources:
+            kinds:
+            - Deployment
+            - StatefulSet
+            - autoscaling/v2/HorizontalPodAutoscaler
+          namespaces:
+            - mimir
+            - loki
+      mutate:
+        patchStrategicMerge:
+          metadata:
+            annotations:
+              downscaler/exclude: "true"
