@@ -5,7 +5,7 @@ metadata:
 spec:
   validationFailureAction: Enforce
   rules:
-    - name: inject-proxy-env-to-containers
+    - name: add-downscaler-exclude-annotation
       match:
         all:
         - resources:
