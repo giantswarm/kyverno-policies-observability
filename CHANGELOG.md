@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Add `evict-kube-downscaler` cluster policy to evict `mimir` and `loki` from the `kube-downscaler`'s scope.
+
 ## [0.4.0] - 2024-03-27
 
 ### Changed
