@@ -2,7 +2,7 @@
 version: 2.1
 
 orbs:
-  architect: giantswarm/architect@5.5.1
+  architect: giantswarm/architect@5.8.0
 
 commands:
   run-ats:
@@ -24,7 +24,7 @@ commands:
 jobs:
   verify:
     docker:
-      - image: cimg/base:2024.08
+      - image: cimg/base:2024.09
     steps:
       - checkout
       - run:
