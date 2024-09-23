@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+
+- Remove policy for `ServiceMonitor` and `PodMonitor` relabelling schemas as we do not need the enforcement anymore.
+
 ## [0.4.0] - 2024-03-27
 
 ### Changed
