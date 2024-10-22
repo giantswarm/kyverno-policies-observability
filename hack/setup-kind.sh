@@ -15,9 +15,7 @@ kubectl create --context kind-kyverno-cluster \
     -f https://raw.githubusercontent.com/giantswarm/apiextensions/v6.4.1/helm/crds-common/templates/core.giantswarm.io_storageconfigs.yaml \
     -f https://raw.githubusercontent.com/giantswarm/apiextensions/v6.4.1/helm/crds-common/templates/monitoring.giantswarm.io_silences.yaml \
     -f https://raw.githubusercontent.com/giantswarm/apiextensions/v6.4.1/helm/crds-common/templates/release.giantswarm.io_releases.yaml \
-    -f https://raw.githubusercontent.com/giantswarm/apiextensions/v6.4.1/helm/crds-common/templates/security.giantswarm.io_organizations.yaml \
-    -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.62.0/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml \
-    -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.62.0/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
+    -f https://raw.githubusercontent.com/giantswarm/apiextensions/v6.4.1/helm/crds-common/templates/security.giantswarm.io_organizations.yaml
 
 MOCK_CREDENTIALS=$(echo -n "something" | base64)
 

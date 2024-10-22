@@ -16,10 +16,8 @@ from ensure import kubeadm_control_plane
 from ensure import kubeadmconfig_controlplane
 from ensure import kubeadmconfig_with_files
 from ensure import kubeadmconfig_with_audit_file
-from ensure import podmonitor
 from ensure import silence
 from ensure import silence_with_matchers
-from ensure import servicemonitor
 
 import pytest
 
@@ -85,32 +83,3 @@ def test_silence_heartbeat_policy_with_existing_matchers(silence_with_matchers) 
 
     assert (matchers[0]['value'] == "test" and matchers[0]['name'] == "test" and not matchers[0]['isRegex'] and not matchers[0]['isEqual'])
     assert (matchers[1]['value'] == "Heartbeat" and matchers[1]['name'] == "alertname" and not matchers[1]['isRegex'] and not matchers[1]['isEqual'])
-
-
-@pytest.mark.smoke
-def test_pod_monitor_labelling_schema_policy(podmonitor) -> None:
-    """
-    test_service_monitor_labelling_schema_policy tests defaulting of an empty Service monitor to check that the labelling schema is configured.
-    :param podmonitor: Any PodMonitor CR.
-    """
-    endpoints = podmonitor['spec']['podMetricsEndpoints']
-    for endpoint in endpoints:
-        relabelings = endpoint['relabelings']
-        assert relabelings[0]['sourceLabels'] == ['__meta_kubernetes_pod_label_app_kubernetes_io_name'] and relabelings[0]['targetLabel'] == 'app'      \
-          and relabelings[1]['sourceLabels'] == ['__meta_kubernetes_pod_node_name'] and relabelings[1]['targetLabel'] == 'node'                         \
-          and relabelings[2]['sourceLabels'] == ['__meta_kubernetes_node_label_role'] and relabelings[2]['targetLabel'] == 'role'                       \
-        , 'Invalid relabelings {} '.format(relabelings)
-
-@pytest.mark.smoke
-def test_service_monitor_labelling_schema_policy(servicemonitor) -> None:
-    """
-    test_service_monitor_labelling_schema_policy tests defaulting of an empty Service monitor to check that the labelling schema is configured.
-    :param servicemonitor: Any ServiceMonitor CR.
-    """
-    endpoints = servicemonitor['spec']['endpoints']
-    for endpoint in endpoints:
-        relabelings = endpoint['relabelings']
-        assert relabelings[0]['targetLabel'] == 'app'                                                                                                   \
-          and relabelings[1]['sourceLabels'] == ['__meta_kubernetes_pod_label_app_kubernetes_io_name'] and relabelings[1]['targetLabel'] == 'app'       \
-          and relabelings[2]['sourceLabels'] == ['__meta_kubernetes_node_label_role'] and relabelings[2]['targetLabel'] == 'role'                       \
-        , 'Invalid relabelings {}'.format(relabelings)

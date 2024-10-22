@@ -2,7 +2,7 @@
 version: 2.1
 
 orbs:
-  architect: giantswarm/architect@5.3.1
+  architect: giantswarm/architect@5.10.1
 
 commands:
   run-ats:
@@ -24,7 +24,7 @@ commands:
 jobs:
   verify:
     docker:
-      - image: cimg/base:2024.07
+      - image: cimg/base:2024.10
     steps:
       - checkout
       - run:
@@ -38,7 +38,7 @@ jobs:
 
   test-policies:
     machine:
-      image: ubuntu-2004:202010-01
+      image: ubuntu-2204:2024.01.2
     environment:
       KIND_VERSION: v0.14.0
       KUBERNETES_VERSION: v1.24.0

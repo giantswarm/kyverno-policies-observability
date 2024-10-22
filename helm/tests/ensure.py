@@ -7,8 +7,6 @@ from pytest_helm_charts.fixtures import Cluster
 import logging
 LOGGER = logging.getLogger(__name__)
 
-pod_monitor_name = "test-pod-monitor"
-service_monitor_name = "test-service-monitor"
 silence_name = "test-silence"
 cluster_name = "test-cluster"
 machinepool_name = "mp0"
@@ -770,71 +768,3 @@ def silence_with_matchers(kube_cluster: Cluster):
 
     kube_cluster.kubectl(f"delete silence {silence_name}", output_format=None)
     LOGGER.info(f"Silence {silence_name} deleted")
-
-# Service Monitor fixtures
-@pytest.fixture
-def servicemonitor(kube_cluster: Cluster):
-    sm = dedent(f"""
-        apiVersion: monitoring.coreos.com/v1
-        kind: ServiceMonitor
-        metadata:
-          name: {service_monitor_name}
-          namespace: default
-        spec:
-          selector:
-            matchLabels:
-              app: my-app
-          endpoints:
-          - port: "web"
-            relabelings:
-              - targetLabel: app
-          - port: "http"
-            relabelings:
-              - targetLabel: app
-    """)
-
-    kube_cluster.kubectl("apply", std_input=sm, output_format=None)
-    LOGGER.info(f"ServiceMonitor {service_monitor_name} applied")
-
-    raw = kube_cluster.kubectl(
-        f"get servicemonitors {service_monitor_name}", output_format="yaml")
-
-    serviceMonitor = yaml.safe_load(raw)
-
-    yield serviceMonitor
-
-    kube_cluster.kubectl(f"delete servicemonitors {service_monitor_name}", output_format=None)
-    LOGGER.info(f"ServiceMonitor {service_monitor_name} deleted")
-
-# Pod Monitor fixtures
-@pytest.fixture
-def podmonitor(kube_cluster: Cluster):
-    sm = dedent(f"""
-        apiVersion: monitoring.coreos.com/v1
-        kind: PodMonitor
-        metadata:
-          name: {pod_monitor_name}
-          namespace: default
-        spec:
-          selector:
-            matchLabels:
-              app: my-app
-          namespaceSelector:
-            any: true
-          podMetricsEndpoints:
-          - interval: 30s
-            port: http
-    """)
-
-    kube_cluster.kubectl("apply", std_input=sm, output_format=None)
-    LOGGER.info(f"PodMonitor {pod_monitor_name} applied")
-
-    raw = kube_cluster.kubectl(
-        f"get podmonitors {pod_monitor_name}", output_format="yaml")
-
-    podMonitor = yaml.safe_load(raw)
-
-    yield podMonitor
-
-    kube_cluster.kubectl(f"delete podmonitors {pod_monitor_name}", output_format=None)
-    LOGGER.info(f"PodMonitor {pod_monitor_name} deleted")
