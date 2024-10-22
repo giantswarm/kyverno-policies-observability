@@ -2,7 +2,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: evict-kube-downscaler
+  name: kube-downscaler-eviction-exclusions
 spec:
   validationFailureAction: Enforce
   rules:
