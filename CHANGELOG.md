@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Add `evict-kube-downscaler` cluster policy to evict `mimir` and `loki` from the `kube-downscaler`'s scope.
+- Add `kube-downscaler-eviction-exclusions` cluster policy to remove `mimir` and `loki` from the `kube-downscaler`'s eviction scope.
 
 ## [0.5.0] - 2024-09-23
 
