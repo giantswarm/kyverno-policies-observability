@@ -147,11 +147,11 @@ workflows:
             only: /^v.*/
 
     - architect/push-to-app-collection:
-        name: push-kyverno-policies-observability-to-gcp-app-collection
+        name: push-kyverno-policies-observability-to-proxmox-app-collection
         context: architect
         app_name: kyverno-policies-observability
         app_namespace: giantswarm
-        app_collection_repo: gcp-app-collection
+        app_collection_repo: proxmox-app-collection
         requires:
         - push-kyverno-policies-observability-to-catalog
         filters:
