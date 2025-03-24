@@ -5,7 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 pre-commit = "==4.2.0"
-setuptools = "==77.0.3"
+setuptools = "==78.0.1"
 
 [packages]
 pytest-helm-charts = ">=1.1.2"
@@ -14,7 +14,7 @@ pykube-ng = "==23.6.0"
 pyyaml = "==6.0.2"
 pytest-rerunfailures = "==15.0"
 requests = "==2.32.3"
-setuptools = "==77.0.3"
+setuptools = "==78.0.1"
 exceptiongroup = "*"
 
 [requires]
