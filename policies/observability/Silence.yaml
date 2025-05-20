@@ -19,3 +19,21 @@ spec:
           - path: "/spec/matchers/-"
             op: add
             value: {"name": "all_pipelines", "value": "true", "isEqual": false, "isRegex": false}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    application.giantswarm.io/team: atlas
+    rbac.kyverno.io/aggregate-to-background-controller: "true"
+  name: kyverno:gs-o11y:always-allow-heartbeats-and-all-pipelines-alerts
+rules:
+- apiGroups:
+  - monitoring.giantswarm.io
+  resources:
+  - silences
+  verbs:
+  - get
+  - list
+  - watch
+  - update
