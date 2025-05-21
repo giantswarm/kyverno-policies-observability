@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Each policy now has a matching ClusterRole
+
 ## [0.6.0] - 2024-10-24
 
 ### Changed
