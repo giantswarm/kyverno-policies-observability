@@ -66,12 +66,30 @@ def test_silence_heartbeat_policy(silence) -> None:
     """
     matchers = silence['spec']['matchers']
 
+    # Check that we have exactly 2 matchers (alertname and all_pipelines)
+    assert len(matchers) == 2
+    
+    # Find and validate the alertname matcher
+    alertname_matcher = None
+    all_pipelines_matcher = None
+    
     for matcher in matchers:
         if matcher['name'] == "alertname":
-            assert (matcher['value'] == "Heartbeat" and not matcher['isRegex'] and not matcher['isEqual'])
-            return
-
-    pytest.fail("Heartbeat matcher is missing")
+            alertname_matcher = matcher
+        elif matcher['name'] == "all_pipelines":
+            all_pipelines_matcher = matcher
+    
+    # Assert alertname matcher exists and has correct values
+    assert alertname_matcher is not None, "alertname matcher is missing"
+    assert (alertname_matcher['value'] == "Heartbeat" and 
+            not alertname_matcher['isRegex'] and 
+            not alertname_matcher['isEqual'])
+    
+    # Assert all_pipelines matcher exists and has correct values
+    assert all_pipelines_matcher is not None, "all_pipelines matcher is missing"
+    assert (all_pipelines_matcher['value'] == "true" and 
+            not all_pipelines_matcher['isRegex'] and 
+            not all_pipelines_matcher['isEqual'])
 
 @pytest.mark.smoke
 def test_silence_heartbeat_policy_with_existing_matchers(silence_with_matchers) -> None:
@@ -81,5 +99,33 @@ def test_silence_heartbeat_policy_with_existing_matchers(silence_with_matchers) 
     """
     matchers = silence_with_matchers['spec']['matchers']
 
-    assert (matchers[0]['value'] == "test" and matchers[0]['name'] == "test" and not matchers[0]['isRegex'] and not matchers[0]['isEqual'])
-    assert (matchers[1]['value'] == "Heartbeat" and matchers[1]['name'] == "alertname" and not matchers[1]['isRegex'] and not matchers[1]['isEqual'])
+    # Should have 3 matchers: original test matcher + alertname + all_pipelines
+    assert len(matchers) == 3
+
+    # Validate the original test matcher (should be first)
+    assert (matchers[0]['value'] == "test" and 
+            matchers[0]['name'] == "test" and 
+            not matchers[0]['isRegex'] and 
+            not matchers[0]['isEqual'])
+
+    # Find and validate the added matchers
+    alertname_matcher = None
+    all_pipelines_matcher = None
+
+    for matcher in matchers:  # Skip the first matcher (test matcher)
+        if matcher['name'] == "alertname":
+            alertname_matcher = matcher
+        elif matcher['name'] == "all_pipelines":
+            all_pipelines_matcher = matcher
+
+    # Assert alertname matcher exists and has correct values
+    assert alertname_matcher is not None, "alertname matcher is missing"
+    assert (alertname_matcher['value'] == "Heartbeat" and 
+            not alertname_matcher['isRegex'] and 
+            not alertname_matcher['isEqual'])
+
+    # Assert all_pipelines matcher exists and has correct values
+    assert all_pipelines_matcher is not None, "all_pipelines matcher is missing"
+    assert (all_pipelines_matcher['value'] == "true" and 
+            not all_pipelines_matcher['isRegex'] and 
+            not all_pipelines_matcher['isEqual'])
