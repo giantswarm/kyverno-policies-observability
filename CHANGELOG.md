@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+
+- Update silence policy to also take new silence api version (observability.giantswarm.io/v1alpha2) into account.
+
 ## [0.7.0] - 2025-05-21
 
 ### Changed
