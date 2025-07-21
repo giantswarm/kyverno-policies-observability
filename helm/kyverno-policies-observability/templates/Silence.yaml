@@ -7,7 +7,22 @@ metadata:
     {{ include "labels.common" . | nindent 4 }}
 spec:
   rules:
-    - name: always-allow-heartbeats-and-all-pipelines-alerts
+    # Rule for new v1alpha2 API (namespace-scoped with matchType enum)
+    - name: always-allow-heartbeats-and-all-pipelines-alerts-v1alpha2
+      match:
+        resources:
+          kinds:
+          - observability.giantswarm.io/v1alpha2/Silence
+      mutate:
+        patchesJson6902: |-
+          - path: "/spec/matchers/-"
+            op: add
+            value: {"name": "alertname", "value": "Heartbeat", "matchType": "!="}
+          - path: "/spec/matchers/-"
+            op: add
+            value: {"name": "all_pipelines", "value": "true", "matchType": "!="}
+    # Rule for legacy v1alpha1 API (cluster-scoped with boolean fields)
+    - name: always-allow-heartbeats-and-all-pipelines-alerts-v1alpha1
       match:
         resources:
           kinds:
@@ -16,10 +31,10 @@ spec:
         patchesJson6902: |-
           - path: "/spec/matchers/-"
             op: add
-            value: {"name": "alertname", "value": "Heartbeat", "isEqual": false, "isRegex": false}
+            value: {"name": "alertname", "value": "Heartbeat", "isRegex": false, "isEqual": false}
           - path: "/spec/matchers/-"
             op: add
-            value: {"name": "all_pipelines", "value": "true", "isEqual": false, "isRegex": false}
+            value: {"name": "all_pipelines", "value": "true", "isRegex": false, "isEqual": false}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -29,6 +44,15 @@ metadata:
     rbac.kyverno.io/aggregate-to-background-controller: "true"
   name: kyverno:gs-o11y:always-allow-heartbeats-and-all-pipelines-alerts
 rules:
+- apiGroups:
+  - observability.giantswarm.io
+  resources:
+  - silences
+  verbs:
+  - get
+  - list
+  - watch
+  - update
 - apiGroups:
   - monitoring.giantswarm.io
   resources:
