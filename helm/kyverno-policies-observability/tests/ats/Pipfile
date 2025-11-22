@@ -4,7 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pre-commit = "==4.3.0"
+pre-commit = "==4.5.0"
 setuptools = "==80.9.0"
 
 [packages]
