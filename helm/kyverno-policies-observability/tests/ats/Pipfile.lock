@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "936d7cfdb62ebdff7bb7f4e65652914de69268a2fd8d666f2f7b202397b20d54"
+            "sha256": "7d5fdfd80b514d5e6e92a325f126e2a74e43f35c0d2d7397adbde97c0c226923"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -211,21 +211,17 @@
         },
         "pytest": {
             "hashes": [
-                "sha256:86c0d0b93306b961d58d62a4db4879f27fe25513d4b969df351abdddb3c30e01",
-                "sha256:872f880de3fc3a5bdc88a11b39c9710c3497a547cfa9320bc3c5e62fbf272e79"
+                "sha256:3e9c069ea73583e255c3b21cf46b8d3c56f6e3a1a8f6da94ccb0fcf57b9d73c8",
+                "sha256:67be0030d194df2dfa7b556f2e56fb3c3315bd5c8822c6951162b92b32ce7dad"
             ],
             "index": "pypi",
-            "markers": "python_version >= '3.9'",
-            "version": "==8.4.2"
+            "markers": "python_version >= '3.10'",
+            "version": "==9.0.1"
         },
         "pytest-helm-charts": {
-            "hashes": [
-                "sha256:8bfc6e4f00a275abf67f7e602c8b6b551bad4a5c7d76bacb390512f9f0fa6e1a",
-                "sha256:f860b1ffdad3faafc8e14b44cb256bddbac11f0badc93bdb129fe66494e89bf3"
-            ],
-            "index": "pypi",
+            "git": "https://github.com/giantswarm/pytest-helm-charts.git",
             "markers": "python_version >= '3.10' and python_version < '4.0'",
-            "version": "==1.3.2"
+            "ref": "8d08cd6a41705585adde7ab387e2719bcf2dfa16"
         },
         "pytest-rerunfailures": {
             "hashes": [
