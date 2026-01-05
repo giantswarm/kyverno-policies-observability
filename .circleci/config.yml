@@ -102,6 +102,7 @@ workflows:
 
     - architect/push-to-app-catalog:
         name: push-kyverno-policies-observability-to-catalog
+        executor: app-build-suite
         app_catalog: control-plane-catalog
         app_catalog_test: control-plane-test-catalog
         attach_workspace: true
