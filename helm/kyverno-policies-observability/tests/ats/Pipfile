@@ -5,7 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 pre-commit = "==4.5.1"
-setuptools = "==80.9.0"
+setuptools = "==80.10.2"
 
 [packages]
 pytest-helm-charts = {git = "https://github.com/giantswarm/pytest-helm-charts.git", ref = "v1.3.3"}
@@ -14,7 +14,7 @@ pykube-ng = "==23.6.0"
 pyyaml = "==6.0.3"
 pytest-rerunfailures = "==16.1"
 requests = "==2.32.5"
-setuptools = "==80.9.0"
+setuptools = "==80.10.2"
 exceptiongroup = "*"
 typing-extensions = "*"
 
