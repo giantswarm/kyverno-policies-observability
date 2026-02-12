@@ -6,6 +6,4 @@ home: https://github.com/giantswarm/kyverno-policies-observability
 icon: https://s.giantswarm.io/app-icons/kyverno/1/light.svg
 version: 0.8.1
 annotations:
-  application.giantswarm.io/team: "atlas"
   io.giantswarm.application.team: "atlas"
-  config.giantswarm.io/version: 1.x.x
