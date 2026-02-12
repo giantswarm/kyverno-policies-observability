@@ -1,0 +1,21 @@
+# Test to verify that the deployed Kyverno policies are ready
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: check-policy-is-ready
+spec:
+  steps:
+  - name: check kube-downscaler-eviction-exclusions policy is ready
+    use:
+      template: ../_steps-templates/cluster-policy-ready.yaml
+      with:
+        bindings:
+        - name: name
+          value: kube-downscaler-eviction-exclusions
+  - name: check always-allow-heartbeats-and-all-pipelines-alerts policy is ready
+    use:
+      template: ../_steps-templates/cluster-policy-ready.yaml
+      with:
+        bindings:
+        - name: name
+          value: always-allow-heartbeats-and-all-pipelines-alerts
