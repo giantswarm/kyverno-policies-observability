@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  architect: giantswarm/architect@6.12.0
+  architect: giantswarm/architect@6.14.1
 
 commands:
   run-ats:
@@ -24,7 +24,7 @@ commands:
 jobs:
   verify:
     docker:
-    - image: cimg/base:2026.02
+    - image: cimg/base:2026.03
     steps:
     - checkout
     - run:
@@ -119,71 +119,3 @@ workflows:
             - main
             - master
 
-    - architect/push-to-app-collection:
-        name: push-kyverno-policies-observability-to-capa-app-collection
-        context: architect
-        app_name: kyverno-policies-observability
-        app_namespace: giantswarm
-        app_collection_repo: capa-app-collection
-        requires:
-        - push-kyverno-policies-observability-to-catalog
-        filters:
-          branches:
-            ignore: /.*/
-          tags:
-            only: /^v.*/
-
-    - architect/push-to-app-collection:
-        name: push-kyverno-policies-observability-to-proxmox-app-collection
-        context: architect
-        app_name: kyverno-policies-observability
-        app_namespace: giantswarm
-        app_collection_repo: proxmox-app-collection
-        requires:
-        - push-kyverno-policies-observability-to-catalog
-        filters:
-          branches:
-            ignore: /.*/
-          tags:
-            only: /^v.*/
-
-    - architect/push-to-app-collection:
-        name: push-kyverno-policies-observability-to-vsphere-app-collection
-        context: architect
-        app_name: kyverno-policies-observability
-        app_namespace: giantswarm
-        app_collection_repo: vsphere-app-collection
-        requires:
-        - push-kyverno-policies-observability-to-catalog
-        filters:
-          branches:
-            ignore: /.*/
-          tags:
-            only: /^v.*/
-
-    - architect/push-to-app-collection:
-        name: push-kyverno-policies-observability-to-cloud-director-app-collection
-        context: architect
-        app_name: kyverno-policies-observability
-        app_namespace: giantswarm
-        app_collection_repo: cloud-director-app-collection
-        requires:
-        - push-kyverno-policies-observability-to-catalog
-        filters:
-          branches:
-            ignore: /.*/
-          tags:
-            only: /^v.*/
-    - architect/push-to-app-collection:
-        name: push-kyverno-policies-observability-to-capz-app-collection
-        context: architect
-        app_name: kyverno-policies-observability
-        app_namespace: giantswarm
-        app_collection_repo: capz-app-collection
-        requires:
-        - push-kyverno-policies-observability-to-catalog
-        filters:
-          branches:
-            ignore: /.*/
-          tags:
-            only: /^v.*/
