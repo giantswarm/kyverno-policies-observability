@@ -1,0 +1,105 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: kube-downscaler-eviction-exclusions-other-namespace
+spec:
+  steps:
+  # Verify the policy is ready before running any mutation assertions.
+  - name: check-policy-ready
+    use:
+      template: ../_steps-templates/cluster-policy-ready.yaml
+      with:
+        bindings:
+        - name: name
+          value: kube-downscaler-eviction-exclusions
+
+  # Resources created in Chainsaw's auto-generated test namespace (not mimir
+  # or loki) must NOT receive the downscaler/exclude annotation. The policy
+  # match condition restricts to namespaces [mimir, loki] only.
+  - name: create-resources-in-other-namespace
+    try:
+    - apply:
+        resource:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: chainsaw-test-deployment
+          spec:
+            selector:
+              matchLabels:
+                app: chainsaw-test
+            template:
+              metadata:
+                labels:
+                  app: chainsaw-test
+              spec:
+                containers:
+                - name: test
+                  image: busybox:latest
+    - apply:
+        resource:
+          apiVersion: apps/v1
+          kind: StatefulSet
+          metadata:
+            name: chainsaw-test-statefulset
+          spec:
+            selector:
+              matchLabels:
+                app: chainsaw-test
+            serviceName: chainsaw-test
+            template:
+              metadata:
+                labels:
+                  app: chainsaw-test
+              spec:
+                containers:
+                - name: test
+                  image: busybox:latest
+    - apply:
+        resource:
+          apiVersion: autoscaling/v2
+          kind: HorizontalPodAutoscaler
+          metadata:
+            name: chainsaw-test-hpa
+          spec:
+            scaleTargetRef:
+              apiVersion: apps/v1
+              kind: Deployment
+              name: chainsaw-test-deployment
+            minReplicas: 1
+            maxReplicas: 2
+
+  # assert: uses partial matching and cannot verify the absence of a field.
+  # Use script: steps to confirm the annotation was NOT injected.
+  - name: assert-no-annotation-on-deployment
+    try:
+    - script:
+        content: |
+          if kubectl get deployment chainsaw-test-deployment -n "$NAMESPACE" -o json \
+            | grep -q '"downscaler/exclude"'; then
+            echo "ERROR: downscaler/exclude annotation must not be present in namespace $NAMESPACE"
+            exit 1
+          fi
+          echo "OK: no downscaler/exclude annotation on Deployment in $NAMESPACE"
+
+  - name: assert-no-annotation-on-statefulset
+    try:
+    - script:
+        content: |
+          if kubectl get statefulset chainsaw-test-statefulset -n "$NAMESPACE" -o json \
+            | grep -q '"downscaler/exclude"'; then
+            echo "ERROR: downscaler/exclude annotation must not be present in namespace $NAMESPACE"
+            exit 1
+          fi
+          echo "OK: no downscaler/exclude annotation on StatefulSet in $NAMESPACE"
+
+  - name: assert-no-annotation-on-hpa
+    try:
+    - script:
+        content: |
+          if kubectl get hpa chainsaw-test-hpa -n "$NAMESPACE" -o json \
+            | grep -q '"downscaler/exclude"'; then
+            echo "ERROR: downscaler/exclude annotation must not be present in namespace $NAMESPACE"
+            exit 1
+          fi
+          echo "OK: no downscaler/exclude annotation on HPA in $NAMESPACE"

@@ -1,0 +1,21 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: check-policy-is-ready
+spec:
+  steps:
+  - name: check-always-allow-heartbeats-policy-ready
+    use:
+      template: ../_steps-templates/cluster-policy-ready.yaml
+      with:
+        bindings:
+        - name: name
+          value: always-allow-heartbeats-and-all-pipelines-alerts
+
+  - name: check-kube-downscaler-eviction-policy-ready
+    use:
+      template: ../_steps-templates/cluster-policy-ready.yaml
+      with:
+        bindings:
+        - name: name
+          value: kube-downscaler-eviction-exclusions

@@ -1,11 +1,5 @@
 SHELL:=/usr/bin/env bash
 
-# Kind cluster name to use
-KIND_CLUSTER_NAME ?= "kyverno-cluster"
-
-# If not already set through env
-KUBERNETES_VERSION ?= v1.24.0
-
 ##@ Generate
 
 .PHONY: generate
@@ -23,24 +17,9 @@ verify:
 clean: ## Delete test manifests from kind cluster.
 	./hack/cleanup-local.sh
 
-.PHONY: kind-create
-kind-create: ## create kind cluster if needed
-	KIND_CLUSTER_NAME=$(KIND_CLUSTER_NAME) ./hack/kind-with-registry.sh
-	./hack/setup-kind.sh
-
 .PHONY: tilt-up
 tilt-up: ## Start Tilt
 	tilt up
-
-# If you change kyverno version here remember to change it in the Tiltfile too
-.PHONY: install-kyverno
-install-kyverno:
-	kubectl create --context kind-$(KIND_CLUSTER_NAME) -f https://github.com/kyverno/kyverno/releases/download/v1.12.5/install.yaml
-	kubectl wait --context kind-$(KIND_CLUSTER_NAME) --for=condition=ready --timeout=90s pod -l app.kubernetes.io/instance=kyverno -nkyverno
-
-.PHONY: kind-get-kubeconfig
-kind-get-kubeconfig:
-	kind get kubeconfig --name $(KIND_CLUSTER_NAME) > $(PWD)/kube.config
 
 .PHONY: dabs
 dabs: generate
