@@ -1,0 +1,125 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: kube-downscaler-eviction-exclusions-loki
+spec:
+  # Serialise to prevent concurrent tests from conflicting on the shared
+  # cluster-scoped loki namespace.
+  concurrent: false
+  steps:
+  # Verify the policy is ready before running any mutation assertions.
+  - name: check-policy-ready
+    use:
+      template: ../_steps-templates/cluster-policy-ready.yaml
+      with:
+        bindings:
+        - name: name
+          value: kube-downscaler-eviction-exclusions
+
+  # Create the loki namespace that the policy matches on.
+  # Chainsaw tracks this namespace for auto-cleanup at test end.
+  - name: create-loki-namespace
+    try:
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: loki
+
+  # A Deployment created in the loki namespace must receive the
+  # downscaler/exclude: "true" annotation injected by the policy at admission.
+  - name: deployment-in-loki-gets-annotation
+    try:
+    - apply:
+        resource:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: chainsaw-test-deployment
+            namespace: loki
+          spec:
+            selector:
+              matchLabels:
+                app: chainsaw-test
+            template:
+              metadata:
+                labels:
+                  app: chainsaw-test
+              spec:
+                containers:
+                - name: test
+                  image: busybox:latest
+    - assert:
+        timeout: 30s
+        resource:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: chainsaw-test-deployment
+            namespace: loki
+            annotations:
+              downscaler/exclude: "true"
+
+  # A StatefulSet created in the loki namespace must also receive the annotation.
+  - name: statefulset-in-loki-gets-annotation
+    try:
+    - apply:
+        resource:
+          apiVersion: apps/v1
+          kind: StatefulSet
+          metadata:
+            name: chainsaw-test-statefulset
+            namespace: loki
+          spec:
+            selector:
+              matchLabels:
+                app: chainsaw-test
+            serviceName: chainsaw-test
+            template:
+              metadata:
+                labels:
+                  app: chainsaw-test
+              spec:
+                containers:
+                - name: test
+                  image: busybox:latest
+    - assert:
+        timeout: 30s
+        resource:
+          apiVersion: apps/v1
+          kind: StatefulSet
+          metadata:
+            name: chainsaw-test-statefulset
+            namespace: loki
+            annotations:
+              downscaler/exclude: "true"
+
+  # A HorizontalPodAutoscaler in loki must also receive the annotation.
+  # The scaleTargetRef points to the Deployment created in the previous step.
+  - name: hpa-in-loki-gets-annotation
+    try:
+    - apply:
+        resource:
+          apiVersion: autoscaling/v2
+          kind: HorizontalPodAutoscaler
+          metadata:
+            name: chainsaw-test-hpa
+            namespace: loki
+          spec:
+            scaleTargetRef:
+              apiVersion: apps/v1
+              kind: Deployment
+              name: chainsaw-test-deployment
+            minReplicas: 1
+            maxReplicas: 2
+    - assert:
+        timeout: 30s
+        resource:
+          apiVersion: autoscaling/v2
+          kind: HorizontalPodAutoscaler
+          metadata:
+            name: chainsaw-test-hpa
+            namespace: loki
+            annotations:
+              downscaler/exclude: "true"

@@ -1,0 +1,61 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: always-allow-heartbeats-and-all-pipelines-alerts-v1alpha1
+spec:
+  # cluster-scoped resource — serialise runs to avoid name conflicts across
+  # concurrent test instances.
+  concurrent: false
+  steps:
+  # Verify the policy is ready before running any mutation assertions.
+  - name: check-policy-ready
+    use:
+      template: ../_steps-templates/cluster-policy-ready.yaml
+      with:
+        bindings:
+        - name: name
+          value: always-allow-heartbeats-and-all-pipelines-alerts
+
+  # Create a v1alpha1 Silence (cluster-scoped) with a single custom matcher.
+  # The policy must append both the Heartbeat and all_pipelines exclusion
+  # matchers at admission time (patchesJson6902 op: add on /spec/matchers/-).
+  # The initial matcher uses "namespace" as name so that the JMESPath filter
+  # assertions below each return exactly one element (no false positives).
+  - name: create-silence-v1alpha1
+    try:
+    - apply:
+        resource:
+          apiVersion: monitoring.giantswarm.io/v1alpha1
+          kind: Silence
+          metadata:
+            name: chainsaw-test-silence-v1alpha1
+          spec:
+            matchers:
+            - name: namespace
+              value: test
+              isRegex: false
+              isEqual: true
+
+  # Assert that both exclusion matchers were injected by the policy.
+  # v1alpha1 uses isRegex/isEqual boolean fields instead of matchType.
+  - name: assert-heartbeat-and-all-pipelines-matchers-added
+    try:
+    - assert:
+        timeout: 30s
+        template: true
+        resource:
+          apiVersion: monitoring.giantswarm.io/v1alpha1
+          kind: Silence
+          metadata:
+            name: chainsaw-test-silence-v1alpha1
+          spec:
+            (matchers[?name=='alertname']):
+            - name: alertname
+              value: Heartbeat
+              isRegex: false
+              isEqual: false
+            (matchers[?name=='all_pipelines']):
+            - name: all_pipelines
+              value: "true"
+              isRegex: false
+              isEqual: false

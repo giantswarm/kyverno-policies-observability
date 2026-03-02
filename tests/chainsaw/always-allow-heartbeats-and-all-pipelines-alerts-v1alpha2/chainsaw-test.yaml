@@ -1,0 +1,56 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: always-allow-heartbeats-and-all-pipelines-alerts-v1alpha2
+spec:
+  steps:
+  # Verify the policy is ready before running any mutation assertions.
+  - name: check-policy-ready
+    use:
+      template: ../_steps-templates/cluster-policy-ready.yaml
+      with:
+        bindings:
+        - name: name
+          value: always-allow-heartbeats-and-all-pipelines-alerts
+
+  # Create a v1alpha2 Silence with a single custom matcher.
+  # The policy must append both the Heartbeat and all_pipelines exclusion
+  # matchers at admission time (patchesJson6902 op: add on /spec/matchers/-).
+  # The initial matcher uses "namespace" as name so that the JMESPath filter
+  # assertions below each return exactly one element (no false positives).
+  - name: create-silence-v1alpha2
+    try:
+    - apply:
+        resource:
+          apiVersion: observability.giantswarm.io/v1alpha2
+          kind: Silence
+          metadata:
+            name: test-silence-v1alpha2
+          spec:
+            matchers:
+            - name: namespace
+              value: test
+              matchType: "="
+
+  # Assert that both exclusion matchers were injected by the policy.
+  # JMESPath filter keys isolate each expected matcher regardless of its
+  # position in the array, so the existing "namespace" matcher is ignored.
+  - name: assert-heartbeat-and-all-pipelines-matchers-added
+    try:
+    - assert:
+        timeout: 30s
+        template: true
+        resource:
+          apiVersion: observability.giantswarm.io/v1alpha2
+          kind: Silence
+          metadata:
+            name: test-silence-v1alpha2
+          spec:
+            (matchers[?name=='alertname']):
+            - name: alertname
+              value: Heartbeat
+              matchType: "!="
+            (matchers[?name=='all_pipelines']):
+            - name: all_pipelines
+              value: "true"
+              matchType: "!="
