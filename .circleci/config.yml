@@ -42,7 +42,7 @@ jobs:
     environment:
       KIND_VERSION: v0.14.0
       KUBERNETES_VERSION: v1.24.0
-      DABS_VERSION: v1.1.4
+      DABS_VERSION: v1.7.0
       CLUSTER_API_VERSION: v1.3.2
     steps:
     - checkout
