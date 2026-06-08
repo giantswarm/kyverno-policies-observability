@@ -27,10 +27,10 @@ spec:
         # Skip the all_pipelines matcher when the Silence opts out via the
         # silence.application.giantswarm.io/force-all marker (label or annotation) set to "true".
         all:
-        - key: '{{ `{{` }} request.object.metadata.annotations."silence.application.giantswarm.io/force-all" || "" {{ `}}` }}'
+        - key: "{{ `{{` }} request.object.metadata.annotations.\"silence.application.giantswarm.io/force-all\" || '' {{ `}}` }}"
           operator: NotEquals
           value: "true"
-        - key: '{{ `{{` }} request.object.metadata.labels."silence.application.giantswarm.io/force-all" || "" {{ `}}` }}'
+        - key: "{{ `{{` }} request.object.metadata.labels.\"silence.application.giantswarm.io/force-all\" || '' {{ `}}` }}"
           operator: NotEquals
           value: "true"
       mutate:
@@ -58,10 +58,10 @@ spec:
         # Skip the all_pipelines matcher when the Silence opts out via the
         # silence.application.giantswarm.io/force-all marker (label or annotation) set to "true".
         all:
-        - key: '{{ `{{` }} request.object.metadata.annotations."silence.application.giantswarm.io/force-all" || "" {{ `}}` }}'
+        - key: "{{ `{{` }} request.object.metadata.annotations.\"silence.application.giantswarm.io/force-all\" || '' {{ `}}` }}"
           operator: NotEquals
           value: "true"
-        - key: '{{ `{{` }} request.object.metadata.labels."silence.application.giantswarm.io/force-all" || "" {{ `}}` }}'
+        - key: "{{ `{{` }} request.object.metadata.labels.\"silence.application.giantswarm.io/force-all\" || '' {{ `}}` }}"
           operator: NotEquals
           value: "true"
       mutate:
