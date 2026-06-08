@@ -2,6 +2,29 @@
 
 This repository contains kyverno policies which Giant Swarm uses for supporting monitoring and observability when working with Giant Swarm clusters.
 
+## Policies
+
+### `always-allow-heartbeats-and-all-pipelines-alerts`
+
+Mutates `Silence` resources (both `monitoring.giantswarm.io/v1alpha1` and `observability.giantswarm.io/v1alpha2`) at admission time so that every Silence keeps letting through:
+
+- `Heartbeat` alerts (a negative `alertname` matcher), and
+- alerts targeting all pipelines (a negative `all_pipelines` matcher).
+
+These matchers are appended to `spec.matchers` so a Silence never accidentally suppresses heartbeats or all-pipelines alerts.
+
+#### Opting out of the `all_pipelines` matcher
+
+To create a Silence that is *not* restricted by the `all_pipelines` matcher, set the following label **or** annotation on the Silence to the string `"true"`:
+
+```yaml
+metadata:
+  annotations:
+    silence.application.giantswarm.io/force-all: "true"
+```
+
+When this marker is present, the policy still adds the `Heartbeat` matcher but skips the `all_pipelines` matcher. The value must be the string `"true"` (label and annotation values are always strings).
+
 ## Repository structure
 
 We implement an app according to the [general Giant Swarm app platform](https://docs.giantswarm.io/app-platform/) which relies on Helm for application management.

@@ -59,3 +59,76 @@ spec:
               value: "true"
               isRegex: false
               isEqual: false
+
+  # Opt-out via annotation: when the Silence carries the
+  # silence.application.giantswarm.io/force-all=true annotation, the policy
+  # must still add the Heartbeat matcher but must NOT add the all_pipelines
+  # matcher (precondition skips the all-pipelines rule).
+  - name: create-silence-v1alpha1-force-all-annotation
+    try:
+    - apply:
+        resource:
+          apiVersion: monitoring.giantswarm.io/v1alpha1
+          kind: Silence
+          metadata:
+            name: chainsaw-test-silence-v1alpha1-force-all-annotation
+            annotations:
+              silence.application.giantswarm.io/force-all: "true"
+          spec:
+            matchers:
+            - name: namespace
+              value: test
+              isRegex: false
+              isEqual: true
+  - name: assert-heartbeat-added-and-all-pipelines-skipped-annotation
+    try:
+    - assert:
+        timeout: 30s
+        template: true
+        resource:
+          apiVersion: monitoring.giantswarm.io/v1alpha1
+          kind: Silence
+          metadata:
+            name: chainsaw-test-silence-v1alpha1-force-all-annotation
+          spec:
+            (matchers[?name=='alertname']):
+            - name: alertname
+              value: Heartbeat
+              isRegex: false
+              isEqual: false
+            (length(matchers[?name=='all_pipelines'])): 0
+
+  # Opt-out via label: same expectation as the annotation case above.
+  - name: create-silence-v1alpha1-force-all-label
+    try:
+    - apply:
+        resource:
+          apiVersion: monitoring.giantswarm.io/v1alpha1
+          kind: Silence
+          metadata:
+            name: chainsaw-test-silence-v1alpha1-force-all-label
+            labels:
+              silence.application.giantswarm.io/force-all: "true"
+          spec:
+            matchers:
+            - name: namespace
+              value: test
+              isRegex: false
+              isEqual: true
+  - name: assert-heartbeat-added-and-all-pipelines-skipped-label
+    try:
+    - assert:
+        timeout: 30s
+        template: true
+        resource:
+          apiVersion: monitoring.giantswarm.io/v1alpha1
+          kind: Silence
+          metadata:
+            name: chainsaw-test-silence-v1alpha1-force-all-label
+          spec:
+            (matchers[?name=='alertname']):
+            - name: alertname
+              value: Heartbeat
+              isRegex: false
+              isEqual: false
+            (length(matchers[?name=='all_pipelines'])): 0
