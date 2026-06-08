@@ -7,8 +7,8 @@ metadata:
     {{ include "labels.common" . | nindent 4 }}
 spec:
   rules:
-    # Rule for new v1alpha2 API (namespace-scoped with matchType enum)
-    - name: always-allow-heartbeats-and-all-pipelines-alerts-v1alpha2
+    # Rules for new v1alpha2 API (namespace-scoped with matchType enum)
+    - name: always-allow-heartbeats-v1alpha2
       match:
         resources:
           kinds:
@@ -18,11 +18,28 @@ spec:
           - path: "/spec/matchers/-"
             op: add
             value: {"name": "alertname", "value": "Heartbeat", "matchType": "!="}
+    - name: always-allow-all-pipelines-v1alpha2
+      match:
+        resources:
+          kinds:
+          - observability.giantswarm.io/v1alpha2/Silence
+      preconditions:
+        # Skip the all_pipelines matcher when the Silence opts out via the
+        # silence.application.giantswarm.io/force-all marker (label or annotation) set to "true".
+        all:
+        - key: '{{ `{{` }} request.object.metadata.annotations."silence.application.giantswarm.io/force-all" || "" {{ `}}` }}'
+          operator: NotEquals
+          value: "true"
+        - key: '{{ `{{` }} request.object.metadata.labels."silence.application.giantswarm.io/force-all" || "" {{ `}}` }}'
+          operator: NotEquals
+          value: "true"
+      mutate:
+        patchesJson6902: |-
           - path: "/spec/matchers/-"
             op: add
             value: {"name": "all_pipelines", "value": "true", "matchType": "!="}
-    # Rule for legacy v1alpha1 API (cluster-scoped with boolean fields)
-    - name: always-allow-heartbeats-and-all-pipelines-alerts-v1alpha1
+    # Rules for legacy v1alpha1 API (cluster-scoped with boolean fields)
+    - name: always-allow-heartbeats-v1alpha1
       match:
         resources:
           kinds:
@@ -32,6 +49,23 @@ spec:
           - path: "/spec/matchers/-"
             op: add
             value: {"name": "alertname", "value": "Heartbeat", "isRegex": false, "isEqual": false}
+    - name: always-allow-all-pipelines-v1alpha1
+      match:
+        resources:
+          kinds:
+          - monitoring.giantswarm.io/v1alpha1/Silence
+      preconditions:
+        # Skip the all_pipelines matcher when the Silence opts out via the
+        # silence.application.giantswarm.io/force-all marker (label or annotation) set to "true".
+        all:
+        - key: '{{ `{{` }} request.object.metadata.annotations."silence.application.giantswarm.io/force-all" || "" {{ `}}` }}'
+          operator: NotEquals
+          value: "true"
+        - key: '{{ `{{` }} request.object.metadata.labels."silence.application.giantswarm.io/force-all" || "" {{ `}}` }}'
+          operator: NotEquals
+          value: "true"
+      mutate:
+        patchesJson6902: |-
           - path: "/spec/matchers/-"
             op: add
             value: {"name": "all_pipelines", "value": "true", "isRegex": false, "isEqual": false}
