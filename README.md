@@ -15,7 +15,7 @@ These matchers are appended to `spec.matchers` so a Silence never accidentally s
 
 #### Opting out of the `all_pipelines` matcher
 
-To create a Silence that is *not* restricted by the `all_pipelines` matcher, set the following label **or** annotation on the Silence to the string `"true"`:
+To create a Silence that is *not* restricted by the `all_pipelines` matcher, set the following annotation on the Silence to the string `"true"`:
 
 ```yaml
 metadata:
@@ -23,7 +23,7 @@ metadata:
     silence.application.giantswarm.io/force-all: "true"
 ```
 
-When this marker is present, the policy still adds the `Heartbeat` matcher but skips the `all_pipelines` matcher. The value must be the string `"true"` (label and annotation values are always strings).
+When this annotation is present, the policy still adds the `Heartbeat` matcher but skips the `all_pipelines` matcher. The value must be the string `"true"` (annotation values are always strings).
 
 ## Repository structure
 

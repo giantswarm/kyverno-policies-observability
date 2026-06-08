@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Allow a `Silence` to opt out of the injected `all_pipelines` matcher by setting the `silence.application.giantswarm.io/force-all: "true"` label or annotation. Applies to both the `monitoring.giantswarm.io/v1alpha1` and `observability.giantswarm.io/v1alpha2` Silence APIs.
+- Allow a `Silence` to opt out of the injected `all_pipelines` matcher by setting the `silence.application.giantswarm.io/force-all: "true"` annotation. Applies to both the `monitoring.giantswarm.io/v1alpha1` and `observability.giantswarm.io/v1alpha2` Silence APIs.
 
 ### Changed
 
