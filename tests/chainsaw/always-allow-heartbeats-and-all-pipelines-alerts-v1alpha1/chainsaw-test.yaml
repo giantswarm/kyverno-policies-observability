@@ -60,6 +60,31 @@ spec:
               isRegex: false
               isEqual: false
 
+  # Idempotency: the policy also runs on UPDATE (e.g. the silence-operator
+  # adding its finalizer). Trigger an update by adding a label and assert the
+  # injected matchers are NOT duplicated — exactly one of each must remain.
+  - name: update-silence-v1alpha1-and-assert-no-duplicate-matchers
+    try:
+    - patch:
+        resource:
+          apiVersion: monitoring.giantswarm.io/v1alpha1
+          kind: Silence
+          metadata:
+            name: chainsaw-test-silence-v1alpha1
+            labels:
+              trigger-update: "1"
+    - assert:
+        timeout: 30s
+        template: true
+        resource:
+          apiVersion: monitoring.giantswarm.io/v1alpha1
+          kind: Silence
+          metadata:
+            name: chainsaw-test-silence-v1alpha1
+          spec:
+            (length(matchers[?name=='alertname' && value=='Heartbeat'])): 1
+            (length(matchers[?name=='all_pipelines'])): 1
+
   # Opt-out via annotation: when the Silence carries the
   # silence.application.giantswarm.io/force-all=true annotation, the policy
   # must still add the Heartbeat matcher but must NOT add the all_pipelines
