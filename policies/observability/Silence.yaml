@@ -12,6 +12,12 @@ spec:
         resources:
           kinds:
           - observability.giantswarm.io/v1alpha2/Silence
+      preconditions:
+        # Idempotency: only add the Heartbeat matcher if it is absent.
+        all:
+        - key: "{{ request.object.spec.matchers[?name=='alertname' && value=='Heartbeat'] || `[]` | length(@) }}"
+          operator: Equals
+          value: 0
       mutate:
         patchesJson6902: |-
           - path: "/spec/matchers/-"
@@ -23,12 +29,16 @@ spec:
           kinds:
           - observability.giantswarm.io/v1alpha2/Silence
       preconditions:
+        all:
         # Skip the all_pipelines matcher when the Silence opts out via the
         # silence.application.giantswarm.io/force-all annotation set to "true".
-        all:
         - key: "{{ request.object.metadata.annotations.\"silence.application.giantswarm.io/force-all\" || '' }}"
           operator: NotEquals
           value: "true"
+        # Idempotency: only add the all_pipelines matcher if it is absent.
+        - key: "{{ request.object.spec.matchers[?name=='all_pipelines'] || `[]` | length(@) }}"
+          operator: Equals
+          value: 0
       mutate:
         patchesJson6902: |-
           - path: "/spec/matchers/-"
@@ -40,6 +50,12 @@ spec:
         resources:
           kinds:
           - monitoring.giantswarm.io/v1alpha1/Silence
+      preconditions:
+        # Idempotency: only add the Heartbeat matcher if it is absent.
+        all:
+        - key: "{{ request.object.spec.matchers[?name=='alertname' && value=='Heartbeat'] || `[]` | length(@) }}"
+          operator: Equals
+          value: 0
       mutate:
         patchesJson6902: |-
           - path: "/spec/matchers/-"
@@ -51,12 +67,16 @@ spec:
           kinds:
           - monitoring.giantswarm.io/v1alpha1/Silence
       preconditions:
+        all:
         # Skip the all_pipelines matcher when the Silence opts out via the
         # silence.application.giantswarm.io/force-all annotation set to "true".
-        all:
         - key: "{{ request.object.metadata.annotations.\"silence.application.giantswarm.io/force-all\" || '' }}"
           operator: NotEquals
           value: "true"
+        # Idempotency: only add the all_pipelines matcher if it is absent.
+        - key: "{{ request.object.spec.matchers[?name=='all_pipelines'] || `[]` | length(@) }}"
+          operator: Equals
+          value: 0
       mutate:
         patchesJson6902: |-
           - path: "/spec/matchers/-"
