@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-06-15
+
 ### Added
 
 - Allow a `Silence` to opt out of the injected `all_pipelines` matcher by setting the `silence.application.giantswarm.io/force-all: "true"` annotation. Applies to both the `monitoring.giantswarm.io/v1alpha1` and `observability.giantswarm.io/v1alpha2` Silence APIs.
@@ -121,7 +123,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial policies moved from [`kyverno-policies`](https://github.com/giantswarm/kyverno-policies).
 - Push to AWS, Azure, KVM, and OpenStack collections.
 
-[Unreleased]: https://github.com/giantswarm/kyverno-policies-observability/compare/v0.8.1...HEAD
+[Unreleased]: https://github.com/giantswarm/kyverno-policies-observability/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/giantswarm/kyverno-policies-observability/compare/v0.8.1...v0.9.0
 [0.8.1]: https://github.com/giantswarm/kyverno-policies-observability/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/giantswarm/kyverno-policies-observability/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/giantswarm/kyverno-policies-observability/compare/v0.6.0...v0.7.0
