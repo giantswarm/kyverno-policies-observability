@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Update pytest to v9.2.0 (giantswarm/kyverno-policies-observability#441)
+- Update architect to v10.18.0 (giantswarm/kyverno-policies-observability#446)
 
 ### Fixed
 
